@@ -1,12 +1,8 @@
 from django.db import models
 
 # Create your models here.
-class IngredientDescription(models.Model):
+class Ingredient(models.Model):
   name = models.CharField(max_length = 200)
-  
-class RecipeIngredient(models.Model):
-  description = models.ForeignKey(IngredientDescription)
-  recipe = models.ForeignKey(Recipe)
   
 class Recipe(models.Model):
   name = models.CharField(max_length=200)
@@ -14,8 +10,10 @@ class Recipe(models.Model):
   cookTime = models.IntegerField(default=0)
   chefComment = models.CharField(max_length=500)
   #FK
-  mainPicture = models.ForeignKey(RecipePicture)
-  chef = models.ForeignKey(Chef)
+  mainPicture = models.ForeignKey('RecipePicture', related_name = 'mainPictureForRecipe' )
+  chef = models.ForeignKey('Chef')
+  previousVersion = models.ForeignKey('self')
+  ingredients = models.ManyToManyField(Ingredient)
   
 class Instruction(models.Model):
   name = models.CharField(max_length=500)
