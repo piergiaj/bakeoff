@@ -1,0 +1,7 @@
+<h1>{{ recipe.name }}</h1>
+<h2>Ingredients</h2>
+<ul>
+{% for ingredient in recipe.ingredients.all %}
+  <li>{{ ingredient.name }}</li>
+{% endfor %}
+</ul>
