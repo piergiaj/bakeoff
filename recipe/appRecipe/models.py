@@ -6,23 +6,23 @@ class Ingredient(models.Model):
   
 class Recipe(models.Model):
   name = models.CharField(max_length=200)
-  prepTime = models.IntegerField(default=0)
-  cookTime = models.IntegerField(default=0)
+  prepTime = models.IntegerField(blank=True,null=True)
+  cookTime = models.IntegerField(blank=True,null=True)
   chefComment = models.CharField(max_length=500)
-  #FK
-  mainPicture = models.ForeignKey('RecipePicture', related_name = 'mainPictureForRecipe' )
+  #Relations
+  mainPicture = models.ForeignKey('RecipePicture',blank=True,null=True, related_name = 'mainPictureForRecipe')
   chef = models.ForeignKey('Chef')
-  previousVersion = models.ForeignKey('self')
+  previousVersion = models.ForeignKey('self',blank=True,null=True)
   ingredients = models.ManyToManyField(Ingredient)
   
 class Instruction(models.Model):
   name = models.CharField(max_length=500)
-  #FK
+  #Relations
   recipe = models.ForeignKey(Recipe)
   
 class RecipePicture(models.Model):
   path = models.CharField(max_length=500)
-  #FK
+  #Relations
   recipe = models.ForeignKey(Recipe)
   
 class Chef(models.Model):
@@ -31,6 +31,6 @@ class Chef(models.Model):
 class Review(models.Model):
   comment = models.CharField(max_length=500)
   rating = models.IntegerField()
-  #FK
+  #Relations
   chef = models.ForeignKey(Chef)
   recipe = models.ForeignKey(Recipe)
