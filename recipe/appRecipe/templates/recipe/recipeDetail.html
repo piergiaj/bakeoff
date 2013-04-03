@@ -1,7 +1,13 @@
-<h1>{{ recipe.name }}</h1>
-<h2>Ingredients</h2>
-<ul>
-{% for ingredient in recipe.ingredients.all %}
-  <li>{{ ingredient.name }}</li>
-{% endfor %}
-</ul>
+{% extends "recipe/base.html" %}
+
+{% block title %}{{ recipe.name}}{% endblock title %}
+
+{% block content %}
+  <h1>{{ recipe.name }}</h1>
+  <h2>Ingredients</h2>
+  <ul>
+  {% for ingredient in recipe.ingredients.all %}
+    <li>{{ ingredient.name }}</li>
+  {% endfor %}
+  </ul>
+{% endblock content %}

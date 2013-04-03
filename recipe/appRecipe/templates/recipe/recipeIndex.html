@@ -1,9 +1,19 @@
-{% if recipe_list %}
-  <ul>
-  {% for recipe in recipe_list %}
-    <li><a href="/recipes/{{ recipe.id }}/">{{ recipe.name }}</a></li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p>No recipes are available.</p>
-{% endif %}
+{% extends "recipe/base.html" %}
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'recipe/style.css' %}" />
+
+{% block title %}Recipe Index{% endblock title %}
+
+{% block content %}
+  {% if recipe_list %}
+    <ul>
+    {% for recipe in recipe_list %}
+      <li><a href="{% url 'recipeDetail' recipe.id %}">{{ recipe.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No recipes are available.</p>
+  {% endif %}
+{% endblock content %}

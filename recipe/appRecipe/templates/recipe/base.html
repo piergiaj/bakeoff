@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}Cool Recipe Site{% endblock title %}</title>
+</head>
+
+<body>
+  <div id="sidebar" style="float:left">
+    {%block sidebar %}
+    Nav sidebar
+    <ul>
+      <li><a href="{% url 'recipeIndex' %}">Recipe Index</a></li>
+    </ul>
+    {% endblock sidebar %}
+  </div>
+
+  <div id="content" style="float:left">
+    Page content
+    {% block content %}<p>Default content, replace in page.</p>{% endblock content %}
+  </div>
+</body>
+</html>
