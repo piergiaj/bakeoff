@@ -1,7 +1,10 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>{% block title %}Cool Recipe Site{% endblock title %}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
 </head>
 
 <body>
@@ -18,5 +21,7 @@
     Page content
     {% block content %}<p>Default content, replace in page.</p>{% endblock content %}
   </div>
+  <!-- JS at end, so pages load faster -->
+  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
