@@ -1,0 +1,17 @@
+{% extends "recipe/base.html" %}
+
+{% block title %}Chef Index{% endblock title %}
+
+{% block ChefIndexActive %}active{% endblock %}
+
+{% block content %}
+  {% if chef_list %}
+    <ul>
+    {% for chef in chef_list %}
+      <li><a href="{% url 'chefDetail' chef.id %}">{{ chef.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No chefs are available.</p>
+  {% endif %}
+{% endblock content %}

@@ -5,22 +5,32 @@
 <head>
   <title>{% block title %}Cool Recipe Site{% endblock title %}</title>
   <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+  <!-- put body padding here if we have a fixed bar on top/bottom -->
+  <!-- put responsive bootstrap css link here if needed -->
 </head>
 
 <body>
-  <div id="sidebar" style="float:left">
-    {%block sidebar %}
-    Nav sidebar
-    <ul>
-      <li><a href="{% url 'recipeIndex' %}">Recipe Index</a></li>
-    </ul>
-    {% endblock sidebar %}
+  <div class="container">
+    <h2>flashy picture location</h2>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url 'home' %}">Recipe Site</a>
+        <ul class="nav">
+          <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipe Index</a></li>
+          <li class="{% block ChefIndexActive %}{% endblock %}"><a href="{% url 'chefIndex' %}">Chef Index</a></li>
+        </ul>
+        <form class="navbar-search pull-right">
+          <input type="text" class="search-query" placeholder="Search" />
+        </form>
+      </div>
+    </div>
+
+    <div id="content">
+      {% block content %}<p>Default content, replace in page.</p>{% endblock content %}
+    </div>
   </div>
 
-  <div id="content" style="float:left">
-    Page content
-    {% block content %}<p>Default content, replace in page.</p>{% endblock content %}
-  </div>
   <!-- JS at end, so pages load faster -->
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 </body>
