@@ -13,4 +13,7 @@ urlpatterns = patterns('',
 
   url(r'^chefs/$', views.chefIndex, name='chefIndex'),
   url(r'^chefs/(?P<chef_id>\d+)/$', views.chefDetail, name='chefDetail'),
+
+  url(r'^addChef', views.addChef, name='addChef'), 
+  url(r'^addRecipe', views.addRecipe, name='addRecipe'),
 )

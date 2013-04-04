@@ -27,6 +27,8 @@ class RecipePicture(models.Model):
   
 class Chef(models.Model):
   name = models.CharField(max_length=200)
+  email = models.EmailField()
+  password = models.CharField(max_length=500)
   
 class Review(models.Model):
   comment = models.CharField(max_length=500)

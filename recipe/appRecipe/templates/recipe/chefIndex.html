@@ -8,7 +8,7 @@
   {% if chef_list %}
     <ul>
     {% for chef in chef_list %}
-      <li><a href="{% url 'chefDetail' chef.id %}">{{ chef.name }}</a></li>
+      <li><a href="{% url 'chefDetail' chef.id %}">{{ chef.name }}</a>	{{ chef.password }}  {{ chef.email }}</li>
     {% endfor %}
     </ul>
   {% else %}

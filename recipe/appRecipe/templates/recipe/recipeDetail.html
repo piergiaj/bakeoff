@@ -4,6 +4,7 @@
 
 {% block content %}
   <h1>{{ recipe.name }}</h1>
+  {{ recipe.chefComment }}
   <h2>Ingredients</h2>
   <ul>
   {% for ingredient in recipe.ingredients.all %}
