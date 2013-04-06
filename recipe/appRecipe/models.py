@@ -23,7 +23,7 @@ class Instruction(models.Model):
 class RecipePicture(models.Model):
   path = models.CharField(max_length=500)
   #Relations
-  recipe = models.ForeignKey(Recipe)
+ # recipe = models.ForeignKey(Recipe)
   
 class Chef(models.Model):
   name = models.CharField(max_length=200)

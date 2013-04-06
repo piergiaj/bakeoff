@@ -10,7 +10,8 @@ class AddRecipe(forms.Form):
 	recipe_Name = forms.CharField()
 	prep_Time = forms.IntegerField()
 	cook_Time = forms.IntegerField()
-	comments = forms.CharField()
-	picture = forms.ImageField()
+	comments = forms.CharField(widget=forms.Textarea)
+	picture = forms.ImageField(required=False)
+	instructions = forms.CharField(widget=forms.Textarea)
 
 

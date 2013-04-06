@@ -16,4 +16,5 @@ urlpatterns = patterns('',
 
   url(r'^addChef', views.addChef, name='addChef'), 
   url(r'^addRecipe', views.addRecipe, name='addRecipe'),
+  url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
 )
