@@ -10,11 +10,11 @@ urlpatterns = patterns('',
   url(r'^recipes/(?P<recipe_id>\d+)/$', views.recipeDetail, name='recipeDetail'),
   # ex: /recipes/3/ingredients
   url(r'^recipes/(?P<recipe_id>\d+)/ingredients/$', views.recipeIngredients, name='recipeIngredients'),
+  url(r'^recipes/add/$', views.addRecipe, name='addRecipe'),
 
   url(r'^chefs/$', views.chefIndex, name='chefIndex'),
   url(r'^chefs/(?P<chef_id>\d+)/$', views.chefDetail, name='chefDetail'),
+  url(r'^chefs/add/$', views.addChef, name='addChef'), 
 
-  url(r'^addChef', views.addChef, name='addChef'), 
-  url(r'^addRecipe', views.addRecipe, name='addRecipe'),
   url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
 )

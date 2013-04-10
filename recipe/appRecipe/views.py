@@ -6,7 +6,7 @@ from appRecipe.models import Recipe, Chef, RecipePicture
 from appRecipe import forms
 
 from smartfile import BasicClient
-import zlib
+#import zlib
 
 def home(request):
   recipe_list = Recipe.objects.all()
@@ -79,13 +79,29 @@ def addRecipe(request):
   
 
       api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
-      api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
+
+      
+
+      #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
 
       recipe = Recipe(chef=get_object_or_404(Chef, pk=1), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
-      rpic = RecipePicture(path=recipeName+'.'+picName[-1])
+      recipe.save()
+
+      #make folder for pictures
+      pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'
+      api.post('/path/oper/mkdir',path=pictureFolder)
+
+      #upload picture
+      fileName = recipeName+'.'+picName[-1]
+      api.post('/path/data'+pictureFolder, file=(fileName, picData))
+
+      #make picture object
+      rpic = recipe.recipepicture_set.create()
+      rpic.setPath(fileName)
+
+      #set this pic as recipe's main pic
       recipe.mainPicture = rpic
       recipe.save()
-      rpic.save()
 
       return HttpResponseRedirect('/recipes')
   else:

@@ -1,5 +1,7 @@
 from django.db import models
 
+from smartfile import BasicClient
+
 # Create your models here.
 class Ingredient(models.Model):
   name = models.CharField(max_length = 200)
@@ -23,7 +25,14 @@ class Instruction(models.Model):
 class RecipePicture(models.Model):
   path = models.CharField(max_length=500)
   #Relations
- # recipe = models.ForeignKey(Recipe)
+  recipe = models.ForeignKey(Recipe)
+
+  def setPath(self, fileName):
+    api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+    #creating link to picture
+    response = api.post('/link',path='RecipePicture/'+str(self.recipe.id)+'/'+fileName,read=True)
+    self.path = response['href']+fileName
+    self.save()
   
 class Chef(models.Model):
   name = models.CharField(max_length=200)

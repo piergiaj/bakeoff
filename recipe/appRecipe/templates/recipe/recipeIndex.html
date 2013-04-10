@@ -5,6 +5,7 @@
 {% block RecipeIndexActive %}active{% endblock %}
 
 {% block content %}
+  <a href="{% url 'addRecipe' %}" >Add New Recipe</a>
   {% if recipe_list %}
     <ul>
     {% for recipe in recipe_list %}

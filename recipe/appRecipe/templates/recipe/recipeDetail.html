@@ -11,4 +11,12 @@
     <li>{{ ingredient.name }}</li>
   {% endfor %}
   </ul>
+  <h2>Main Picture</h2>
+  <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture" >
+  <h2>Other Pictures</h2>
+  {% for picture in recipe.recipepicture_set.all %}
+    {% if picture != recipe.mainPicture %}
+      <img src="{{ picture.path }}" alt="Other picture" >
+    {% endif %}
+  {% endfor %}
 {% endblock content %}
