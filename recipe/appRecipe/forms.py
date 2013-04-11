@@ -14,4 +14,6 @@ class AddRecipe(forms.Form):
 	picture = forms.ImageField(required=False)
 	instructions = forms.CharField(widget=forms.Textarea)
 
-
+class Login(forms.Form):
+	username = forms.CharField()
+	password = forms.CharField(widget=forms.PasswordInput)

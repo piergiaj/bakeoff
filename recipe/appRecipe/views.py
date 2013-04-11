@@ -1,8 +1,9 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
-
 from appRecipe.models import Recipe, Chef, RecipePicture
+from django.core.exceptions import ObjectDoesNotExist
+
 from appRecipe import forms
 
 from smartfile import BasicClient
@@ -55,7 +56,6 @@ def addChef(request):
       name = form.cleaned_data['name']
       email = form.cleaned_data['email']
       password = form.cleaned_data['password']
-      print password
 
       chef = Chef(name=name, email=email, password=password)
       chef.save()
@@ -64,6 +64,28 @@ def addChef(request):
   else:
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
+
+def login(request):
+  if request.method == 'POST':
+    form = forms.Login(request.POST, request.FILES)
+    if form.is_valid():
+      username = form.cleaned_data['username']
+      pw = form.cleaned_data['password']
+
+      try:
+        chef = Chef.objects.get(name=username)
+      except ObjectDoesNotExist:
+        return HttpResponseRedirect('/login')
+
+      if chef.password == pw:
+        request.session['username'] = username
+      else:
+        return HttpResponseRedirect('/login')
+    return HttpResponseRedirect('/')
+
+  else:
+    form = forms.Login()
+  return render(request, 'recipe/login.html', {'form':form})
 
 def addRecipe(request):
   if request.method == 'POST':
