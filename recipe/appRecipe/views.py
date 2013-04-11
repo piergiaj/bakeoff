@@ -11,8 +11,10 @@ from smartfile import BasicClient
 def home(request):
   recipe_list = Recipe.objects.all()
   chef_list = Chef.objects.all()
+  recipe_picture_list = RecipePicture.objects.all()
   context = { 'chef_list' : chef_list,
-              'recipe_list': recipe_list, }
+              'recipe_list': recipe_list,
+              'recipe_picture_list' : recipe_picture_list, }
   return render(request, 'recipe/home.html', context)
 
 def recipeIndex(request):
