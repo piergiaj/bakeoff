@@ -5,6 +5,16 @@ from smartfile import BasicClient
 # Create your models here.
 class Ingredient(models.Model):
   name = models.CharField(max_length = 200)
+
+class UnitOfMeasure(models.Model):
+  name = models.CharField(max_length=50) # Make these singular and use Django's pluralizations?
+
+class RecipeIngredient(models.Model):
+  amount = models.FloatField()
+  #Relations
+  unit = models.ForeignKey(UnitOfMeasure)
+  ingredient = models.ForeignKey(Ingredient)
+  recipe = models.ForeignKey('Recipe')
   
 class Recipe(models.Model):
   name = models.CharField(max_length=200)
@@ -15,7 +25,7 @@ class Recipe(models.Model):
   mainPicture = models.ForeignKey('RecipePicture',blank=True,null=True, related_name = 'mainPictureForRecipe')
   chef = models.ForeignKey('Chef')
   previousVersion = models.ForeignKey('self',blank=True,null=True)
-  ingredients = models.ManyToManyField(Ingredient)
+  ingredients = models.ManyToManyField(Ingredient, through=RecipeIngredient)
   
 class Instruction(models.Model):
   name = models.CharField(max_length=500)

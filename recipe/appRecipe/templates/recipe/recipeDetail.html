@@ -7,8 +7,8 @@
   {{ recipe.chefComment }}
   <h2>Ingredients</h2>
   <ul>
-  {% for ingredient in recipe.ingredients.all %}
-    <li>{{ ingredient.name }}</li>
+  {% for ri in recipe.recipeingredient_set.all %}
+    <li>{{ ri.amount }} {{ ri.unit.name }}{{ ri.amount|pluralize }} of {{ ri.ingredient.name }}</li>
   {% endfor %}
   </ul>
   <h2>Main Picture</h2>
