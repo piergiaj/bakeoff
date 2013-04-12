@@ -1,0 +1,9 @@
+<div class="media">
+  <a class="pull-left" href="#">
+    <img style="width:64px;height:64px;" src="{{ recipe.mainPicture.path }}" >
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading"><a href="{% url 'recipeDetail' recipe.id %}">{{ recipe.name }}</a></h4>
+    <p>{{ recipe.chefComment }}</p>
+  </div>
+</div>
