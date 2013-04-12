@@ -1,5 +1,5 @@
 <div class="media">
-  <a class="pull-left" href="#">
+  <a class="pull-left" href="{% url 'recipeDetail' recipe.id %}">
     <img style="width:64px;height:64px;" src="{{ recipe.mainPicture.path }}" >
   </a>
   <div class="media-body">
