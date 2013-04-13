@@ -4,7 +4,7 @@
     <img style="width:64px;height:64px;" src="{{ chef.chefpicture_set.get.path }}" >
   </a>
   <div class="media-body">
-    <h4 class="media-heading"><a href="{% url 'chefDetail' chef.id %}">{{ chef.name }}</a></h4>
+    <h4 class="media-heading"><a href="{% url 'chefDetail' chef.id %}">{{ chef.username }}</a></h4>
     <p>Chef since {{ chef.dateCreated|naturaltime }}</p>
   </div>
 </div>
