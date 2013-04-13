@@ -47,8 +47,6 @@ def getPic(request, pic_name):
   response = HttpResponse(img, content_type='image')
   return response
 
-  
-
 def addChef(request):
   if request.method == 'POST':
     form = forms.AddChef(request.POST)
@@ -85,7 +83,7 @@ def login(request):
 
   else:
     form = forms.Login()
-  return render(request, 'recipe/login.html', {'form':form})
+  return render(request, 'recipe/awefawef.html', {'form':form})
 
 def addRecipe(request):
   if request.method == 'POST':

@@ -20,10 +20,16 @@
           <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipe Index</a></li>
           <li class="{% block ChefIndexActive %}{% endblock %}"><a href="{% url 'chefIndex' %}">Chef Index</a></li>
         </ul>
-        {{ request.session.username }}
         <form class="navbar-search pull-right" action="/search/" method="get">
           <input name="q" id="id_q" type="text" class="search-query" placeholder="Search" value="{% if query %}{{query}}{% endif %}"/>
         </form>
+        <ul class="nav pull-right">
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'chefDetail' user.id %}">{{ user.username }}</a></li>
+          {% else %}
+          <li><a href='/login/'>Login</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
 
