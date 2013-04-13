@@ -61,3 +61,6 @@ recPiz.save()
 recPicBee = recBee.recipepicture_set.create(path='https://file.ac/YSu901Am9qY/beef.jpg')
 recBee.mainPicture = recPicBee
 recBee.save()
+
+
+os.system("manage.py rebuild_index")

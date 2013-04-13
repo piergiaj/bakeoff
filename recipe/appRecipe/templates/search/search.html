@@ -1,7 +1,5 @@
 {% extends 'recipe/base.html' %}
 
-{% load appRecipe_extras %} {# classname filter #}
-
 {% block title %}Search{% endblock %}
 
 {% block content %}
@@ -25,10 +23,10 @@
                 <!--<p>
                     <a href="{% url 'recipeDetail' result.object.id %}">{{ result.object.name }}</a>
                 </p>-->
-                {% with class=result.object|classname %}
-                    {% if class == 'Recipe' %}
+                {% with class=result.content_type %}
+                    {% if class == 'appRecipe.recipe' %}
                         {% include "recipe/recipeMediaObject.html" with recipe=result.object only %}
-                    {% elif class == 'Chef' %}
+                    {% elif class == 'appRecipe.chef' %}
                         {% include "recipe/chefSmallMediaObject.html" with chef=result.object only %}
                     {% else %}
                         Error, object type was {{ class }}

@@ -20,6 +20,8 @@
           <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipe Index</a></li>
           <li class="{% block ChefIndexActive %}{% endblock %}"><a href="{% url 'chefIndex' %}">Chef Index</a></li>
         </ul>
+        {% if request.session %}true{% endif %}
+        {{ request.session.username }}
         <form class="navbar-search pull-right" action="/search/" method="get">
           <input name="q" id="id_q" type="text" class="search-query" placeholder="Search" value="{% if query %}{{query}}{% endif %}"/>
         </form>
