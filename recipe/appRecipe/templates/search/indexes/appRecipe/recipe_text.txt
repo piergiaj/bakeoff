@@ -1,0 +1,5 @@
+{{ object.name }}
+{{ object.chef.name }}
+{% for ing in object.ingredients.all %}
+  {{ ing.name }}
+{% endfor %}

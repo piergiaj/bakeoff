@@ -9,7 +9,6 @@
   {% if recipe_list %}
     
     {% for recipe in recipe_list %}
-      <!-- <li><a href="{% url 'recipeDetail' recipe.id %}">{{ recipe.name }}</a></li> -->
       {% include "recipe/recipeMediaObject.html" with recipe=recipe only %}
     {% endfor %}
     

@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'appRecipe',
+    'haystack',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,4 +156,12 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+import os
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname('appRecipe'), 'whoosh_index'),
+    },
 }

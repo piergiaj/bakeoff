@@ -4,6 +4,7 @@
   </a>
   <div class="media-body">
     <h4 class="media-heading"><a href="{% url 'recipeDetail' recipe.id %}">{{ recipe.name }}</a></h4>
-    <p>{{ recipe.chefComment }}</p>
+    Cheffed by: <a href="{% url 'chefDetail' recipe.chef.id %}">{{ recipe.chef.name }}</a><br />
+    {{ recipe.chefComment }}
   </div>
 </div>

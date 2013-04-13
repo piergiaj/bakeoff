@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 
 from appRecipe import views
 
@@ -15,7 +15,9 @@ urlpatterns = patterns('',
   url(r'^chefs/$', views.chefIndex, name='chefIndex'),
   url(r'^chefs/(?P<chef_id>\d+)/$', views.chefDetail, name='chefDetail'),
   url(r'^chefs/add/$', views.addChef, name='addChef'), 
-  url(r'^login', views.login, name='login'),
+  url(r'^login/$', views.login, name='login'),
+
+  url(r'^search/', include('haystack.urls')),
 
   url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
 )
