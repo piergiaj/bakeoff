@@ -16,6 +16,7 @@ urlpatterns = patterns('',
   url(r'^chefs/(?P<chef_id>\d+)/$', views.chefDetail, name='chefDetail'),
   url(r'^chefs/add/$', views.addChef, name='addChef'), 
   url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'recipe/login.html'}),
+  url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page':'/'}),
 
   url(r'^search/', include('haystack.urls')),
 

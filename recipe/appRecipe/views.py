@@ -63,6 +63,7 @@ def addChef(request):
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
 
+''' unused because using django's login function in urls
 def login(request):
   if request.method == 'POST':
     form = forms.Login(request.POST, request.FILES)
@@ -83,7 +84,7 @@ def login(request):
 
   else:
     form = forms.Login()
-  return render(request, 'recipe/awefawef.html', {'form':form})
+  return render(request, 'recipe/awefawef.html', {'form':form})'''
 
 def addRecipe(request):
   if request.method == 'POST':

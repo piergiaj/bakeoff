@@ -25,7 +25,16 @@
         </form>
         <ul class="nav pull-right">
           {% if user.is_authenticated %}
-          <li><a href="{% url 'chefDetail' user.id %}">{{ user.username }}</a></li>
+          <li class="dropdown">
+            <a id="userDropDown" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button">{{ user.username }}<b class="caret" ></b>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="userDropDown">
+              <li><a href="{% url 'addRecipe' %}">New Recipe</li>
+              <li><a href="{% url 'chefDetail' user.id %}">Profile</a></li>
+              <li class="divider" />
+              <li><a href="/logout/">Logout</a></li>
+            </ul>
+          </li>            
           {% else %}
           <li><a href='/login/'>Login</a></li>
           {% endif %}
