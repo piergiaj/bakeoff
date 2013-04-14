@@ -13,7 +13,7 @@ class RecipeIndex(indexes.SearchIndex, indexes.Indexable):
 
 class ChefIndex(indexes.SearchIndex, indexes.Indexable):
   text = indexes.CharField(document=True, use_template=True)
-  dateCreated = indexes.DateTimeField(model_attr='dateCreated')
+  date_joined = indexes.DateTimeField(model_attr='date_joined')
 
   def get_model(self):
     return Chef

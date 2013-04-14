@@ -6,7 +6,9 @@ from appRecipe import util
 
 # Create your models here.
 class Chef(User):
-  dateCreated = models.DateTimeField(auto_now_add=True)
+  #can't have empty class so this is here...
+  def placeholder(self):
+    return ''
 
 class Ingredient(models.Model):
   name = models.CharField(max_length = 200)

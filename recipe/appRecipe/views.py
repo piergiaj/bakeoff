@@ -3,6 +3,7 @@ from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
 from appRecipe.models import Recipe, Chef, RecipePicture
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 from appRecipe import forms
 
@@ -86,6 +87,7 @@ def login(request):
     form = forms.Login()
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
+@login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
     form = forms.AddRecipe(request.POST, request.FILES)
