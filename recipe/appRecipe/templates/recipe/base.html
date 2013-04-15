@@ -4,17 +4,16 @@
 <html lang="en">
 <head>
   <title>{% block title %}Cool Recipe Site{% endblock title %}</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet/less" type="text/css" href="{% static 'bootstrap/less/bootstrap.less' %}" /><script src="{% static 'less/less-1.3.3.min.js' %}" ></script>
   <!-- put body padding here if we have a fixed bar on top/bottom -->
   <!-- put responsive bootstrap css link here if needed -->
 </head>
 
 <body>
-  <div class="container">
-    <h2>flashy picture location</h2>
-
-    <div class="navbar">
+  
+    <div class="navbar navbar-static-top">
       <div class="navbar-inner">
+        <div class="container">
         <a class="brand" href="{% url 'home' %}">Recipe Site</a>
         <ul class="nav">
           <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipes</a></li>
@@ -41,7 +40,8 @@
         </ul>
       </div>
     </div>
-
+  </div>
+<div class="container">
     <div id="content">
       {% block content %}<p>Default content, replace in page.</p>{% endblock content %}
     </div>
