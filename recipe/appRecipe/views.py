@@ -3,6 +3,7 @@ from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
 from appRecipe.models import Recipe, Chef, RecipePicture
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 from appRecipe import forms
 
@@ -47,8 +48,6 @@ def getPic(request, pic_name):
   response = HttpResponse(img, content_type='image')
   return response
 
-  
-
 def addChef(request):
   if request.method == 'POST':
     form = forms.AddChef(request.POST)
@@ -65,6 +64,7 @@ def addChef(request):
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
 
+''' unused because using django's login function in urls
 def login(request):
   if request.method == 'POST':
     form = forms.Login(request.POST, request.FILES)
@@ -85,8 +85,9 @@ def login(request):
 
   else:
     form = forms.Login()
-  return render(request, 'recipe/login.html', {'form':form})
+  return render(request, 'recipe/awefawef.html', {'form':form})'''
 
+@login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
     form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'))

@@ -1,9 +1,9 @@
 {% extends "recipe/base.html" %}
 
-{% block title %}{{ chef.name}}{% endblock title %}
+{% block title %}{{ chef.username }}{% endblock title %}
 
 {% block content %}
-  <h1>{{ chef.name }}</h1>
+  <h1>{{ chef.username }}</h1>
   <h2>Recipes</h2>
   <ul>
   {% for recipe in chef.recipe_set.all %}

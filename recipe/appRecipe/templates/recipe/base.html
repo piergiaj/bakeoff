@@ -17,14 +17,28 @@
       <div class="navbar-inner">
         <a class="brand" href="{% url 'home' %}">Recipe Site</a>
         <ul class="nav">
-          <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipe Index</a></li>
-          <li class="{% block ChefIndexActive %}{% endblock %}"><a href="{% url 'chefIndex' %}">Chef Index</a></li>
+          <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipes</a></li>
+          <li class="{% block ChefIndexActive %}{% endblock %}"><a href="{% url 'chefIndex' %}">Chefs</a></li>
         </ul>
-        {% if request.session %}true{% endif %}
-        {{ request.session.username }}
         <form class="navbar-search pull-right" action="/search/" method="get">
           <input name="q" id="id_q" type="text" class="search-query" placeholder="Search" value="{% if query %}{{query}}{% endif %}"/>
         </form>
+        <ul class="nav pull-right">
+          {% if user.is_authenticated %}
+          <li class="dropdown">
+            <a id="userDropDown" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button">{{ user.username }}<b class="caret" ></b>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="userDropDown">
+              <li><a href="{% url 'addRecipe' %}">New Recipe</li>
+              <li><a href="{% url 'chefDetail' user.id %}">Profile</a></li>
+              <li class="divider" />
+              <li><a href="/logout/">Logout</a></li>
+            </ul>
+          </li>            
+          {% else %}
+          <li><a href='/login/'>Login</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
 

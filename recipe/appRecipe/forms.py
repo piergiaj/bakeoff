@@ -23,6 +23,6 @@ class AddRecipe(forms.Form):
 		for i in range(int(extra_fields)):
 			self.fields['extra_fields_{index}'.format(index=i)] = forms.CharField(required=False)
 
-class Login(forms.Form):
-	username = forms.CharField()
-	password = forms.CharField(widget=forms.PasswordInput)
+#class Login(forms.Form):
+#	username = forms.CharField()
+#	password = forms.CharField(widget=forms.PasswordInput)

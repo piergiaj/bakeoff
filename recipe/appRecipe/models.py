@@ -1,9 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from smartfile import BasicClient
 from appRecipe import util
 
 # Create your models here.
+class Chef(User):
+  #can't have empty class so this is here...
+  def placeholder(self):
+    return ''
+
 class Ingredient(models.Model):
   name = models.CharField(max_length = 200)
 
@@ -25,7 +31,7 @@ class Recipe(models.Model):
   dateCreated = models.DateTimeField(auto_now_add=True)
   #Relations
   mainPicture = models.ForeignKey('RecipePicture',blank=True,null=True, related_name = 'mainPictureForRecipe')
-  chef = models.ForeignKey('Chef')
+  chef = models.ForeignKey(Chef)
   previousVersion = models.ForeignKey('self',blank=True,null=True)
   ingredients = models.ManyToManyField(Ingredient, through=RecipeIngredient)
 
@@ -62,13 +68,7 @@ class RecipePicture(Picture):
   
 class ChefPicture(Picture):
   #Relations
-  chef = models.ForeignKey('Chef')
-  
-class Chef(models.Model):
-  name = models.CharField(max_length=200)
-  email = models.EmailField()
-  password = models.CharField(max_length=500)
-  dateCreated = models.DateTimeField(auto_now_add=True)
+  chef = models.ForeignKey(Chef)
   
 class Review(models.Model):
   comment = models.CharField(max_length=500)
