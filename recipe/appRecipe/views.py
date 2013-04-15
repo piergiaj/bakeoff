@@ -89,7 +89,7 @@ def login(request):
 
 def addRecipe(request):
   if request.method == 'POST':
-    form = forms.AddRecipe(request.POST, request.FILES)
+    form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'))
     if form.is_valid():
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
@@ -108,8 +108,12 @@ def addRecipe(request):
 
       #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
 
-      recipe = Recipe(chef=get_object_or_404(Chef, pk=1), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
-      recipe.save()
+      recipe = Recipe.objects.create(chef=get_object_or_404(Chef, pk=1), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
+      
+      recipe.instruction_set.create(text=instructions)
+      for i in range(form.cleaned_data['inst']):
+        inst = request.POST.get('extra_field_'+str(i))
+        recipe.instruction_set.create(text=inst)
 
       #make folder for pictures
       pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'

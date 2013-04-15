@@ -1,11 +1,20 @@
 {% extends "recipe/base.html" %}
 
+
+
 {% block title %}Add New Chef{% endblock title %}
 
 {% block content %}
 
 <form action="/recipes/add/" method="post" enctype="multipart/form-data">{% csrf_token %}
+	<div id="forms">
 {{ form.as_p }}
+</div>
 <input type="submit" value="Submit" />
 </form>
+
+<button id="add-another">Add Step</button>
+
+
 {% endblock content %}
+
