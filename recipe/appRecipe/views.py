@@ -74,7 +74,9 @@ def addChef(request):
 
 def addReview(request,recipe_id):
   if request.method == 'POST':
-
+    comment = request.POST.get('Comment')
+    rating = request.POST.get('staraddStars')
+    
     return HttpResponseRedirect('/recipes/'+str(recipe_id))
 
 ''' unused because using django's login function in urls

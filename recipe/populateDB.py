@@ -76,4 +76,4 @@ recPiz.review(chef=chefAlex,comment="Amazing",rating=10)
 recPiz.review(chef=chefJosh,comment="Good",rating=6)
 
 
-os.system("manage.py rebuild_index")
+os.system("python manage.py rebuild_index")
