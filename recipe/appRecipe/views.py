@@ -150,12 +150,16 @@ def addRecipe(request):
 
       for i in range(form.cleaned_data['ings']):
         ingName = request.POST.get('extra_ings_'+str(i))
+        amount = request.POST.get('amount_extra_ings_'+str(i))
+        unitName = request.POST.get('unit_extra_ings_'+str(i))
+        unit = UnitOfMeasure.objects.get(name=unitName)
+
         ingList = Ingredient.objects.filter(name=ingName)
         if ingList.count()>0:
           ingredient = ingList[0]
         else:
           ingredient = Ingredient.objects.create(name=ingName)
-        RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=10,unit=UnitOfMeasure.objects.get(name='piece'))
+        RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=amount,unit=unit)
 
       #make folder for pictures
       pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'
