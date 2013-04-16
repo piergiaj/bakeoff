@@ -2,14 +2,66 @@
 
 
 
-{% block title %}Add New Chef{% endblock title %}
+{% block title %}Add New Recipe{% endblock title %}
 
 {% block content %}
 
 <form action="/recipes/add/" method="post" enctype="multipart/form-data">{% csrf_token %}
-	<div id="forms">
-{{ form.as_p }}
+	{{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.recipe_Name.errors }}
+        <label for="id_recipe_Name">Recipe Name:</label>
+        {{ form.recipe_Name }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.prep_Time.errors }}
+        <label for="id_prep_Time">Prep Time:</label>
+        {{ form.prep_Time }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.cook_Time.errors }}
+        <label for="id_cook_Time">Cook Time:</label>
+        {{ form.cook_Time }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.comments.errors }}
+        <label for="id_comments">Chef Comments:</label>
+        {{ form.comments }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.picture.errors }}
+        <label for="id_picture">Picture:</label>
+        {{ form.picture }}
+    </div>
+    <div id="ingredients">
+		<label for="id_extra_ings_0">Ingredients:</label>
+    	<div class="fieldWrapper">
+	        {{ form.extra_ings_0.errors }}
+	        <input id="{{ form.extra_ings_0.html_name }}" name="{{ form.extra_ings_0.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off">
+	        
+	    </div>
+	    <div class="fieldWrapper">
+	        {{ form.extra_ings_1.errors }}
+	        <input id="{{ form.extra_ings_1.html_name }}" name="{{ form.extra_ings_1.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off">
+	    </div>
+    </div>
+    <div id="steps">
+    <div class="fieldWrapper">
+        {{ form.instructions.errors }}
+        <label for="id_instructions">Step 1:</label>
+        {{ form.instructions }}
+    </div>
 </div>
+<div class="fieldWrapper">
+        {{ form.inst.errors }}
+        <label for="id_inst"></label>
+        {{ form.inst }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.ings.errors }}
+        <label for="id_ings"></label>
+        {{ form.ings }}
+    </div>
 <input type="submit" value="Submit" />
 </form>
 

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
-from appRecipe.models import Recipe, Chef, RecipePicture
+from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 
@@ -105,7 +105,7 @@ def login(request):
 @login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
-    form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'))
+    form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'), ings=request.POST.get('ings'))
     if form.is_valid():
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
@@ -139,6 +139,12 @@ def addRecipe(request):
         inst = request.POST.get('extra_field_'+str(i))
         recipe.instruction_set.create(text=inst)
 
+
+      for i in range(form.cleaned_data['ings']):
+        ing = request.POST.get('extra_ings_'+str(i))
+        print ing
+        #RecipeIngredient.objects.create(recipe=recipe,ingredient=ingPep,amount=10,unit=UnitOfMeasure.objects.get(name='piece'))
+
       #make folder for pictures
       pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'
       api.post('/path/oper/mkdir',path=pictureFolder)
@@ -160,7 +166,12 @@ def addRecipe(request):
       return HttpResponseRedirect('/recipes')
   else:
     form = forms.AddRecipe()
-  return render(request, 'recipe/addRecipe.html', {'form':form})
+  ingredients = Ingredient.objects.all()
+  ings = "["
+  for i in ingredients:
+    ings += '"'+i.name+'",'
+  ings = ings[:-1]+']' 
+  return render(request, 'recipe/addRecipe.html', {'form':form, 'ingredients':ings})
 
 def test(request):
   return render(request, 'recipe/test.html', {})
