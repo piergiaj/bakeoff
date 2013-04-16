@@ -26,10 +26,16 @@ def recipeIndex(request):
   
 def recipeDetail(request, recipe_id):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
-  return render(request, 'recipe/recipeDetail.html', {'recipe':recipe})
+  review = None
+  if request.user.is_authenticated():
+    revList = recipe.review_set.filter(chef_id=request.user.id)
+    if revList.count() > 0:
+      review = revList[0]
+  return render(request, 'recipe/recipeDetail.html', {'recipe':recipe, 'review':review})
   
-def recipeIngredients(request, recipe_id):
-  return HttpResponse("You're looking at the ingredients for recipe %s." % recipe_id)
+def recipeReviews(request, recipe_id):
+  recipe = get_object_or_404(Recipe, pk=recipe_id)
+  return render(request, 'recipe/recipeReviews.html', {'recipe':recipe})
 
 def chefIndex(request):
   chef_list = Chef.objects.all()
@@ -63,6 +69,11 @@ def addChef(request):
   else:
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
+
+def addReview(request,recipe_id):
+  if request.method == 'POST':
+
+    return HttpResponseRedirect('/recipes/'+str(recipe_id))
 
 ''' unused because using django's login function in urls
 def login(request):

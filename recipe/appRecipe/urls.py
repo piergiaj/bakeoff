@@ -9,7 +9,8 @@ urlpatterns = patterns('',
   # ex: /recipes/3/
   url(r'^recipes/(?P<recipe_id>\d+)/$', views.recipeDetail, name='recipeDetail'),
   # ex: /recipes/3/ingredients
-  url(r'^recipes/(?P<recipe_id>\d+)/ingredients/$', views.recipeIngredients, name='recipeIngredients'),
+  url(r'^recipes/(?P<recipe_id>\d+)/reviews/$', views.recipeReviews, name='recipeReviews'),
+  url(r'^recipes/(?P<recipe_id>\d+)/reviews/add$', views.addReview, name='addReview'),
   url(r'^recipes/add/$', views.addRecipe, name='addRecipe'),
 
   url(r'^chefs/$', views.chefIndex, name='chefIndex'),
