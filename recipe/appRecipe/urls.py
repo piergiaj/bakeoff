@@ -21,4 +21,6 @@ urlpatterns = patterns('',
   url(r'^search/', include('haystack.urls')),
 
   url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
+
+  url(r'^test/$', views.test),
 )

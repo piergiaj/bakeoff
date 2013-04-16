@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Avg
 
 from smartfile import BasicClient
+
 from appRecipe import util
 
 # Create your models here.
@@ -46,6 +48,12 @@ class Recipe(models.Model):
 
   def cookTimeString(self):
     return util.timeString(self.cookTime)
+
+  def review(self, chef, comment, rating):
+    self.review_set.create(chef=chef,comment=comment,rating=rating)
+
+  def averageRating(self):
+    return int(self.review_set.all().aggregate(Avg('rating'))['rating__avg']+.5)
   
 class Instruction(models.Model):
   text = models.CharField(max_length=500)

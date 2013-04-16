@@ -136,3 +136,6 @@ def addRecipe(request):
   else:
     form = forms.AddRecipe()
   return render(request, 'recipe/addRecipe.html', {'form':form})
+
+def test(request):
+  return render(request, 'recipe/test.html', {})
