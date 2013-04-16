@@ -10,10 +10,20 @@ from appRecipe.models import Recipe, Chef, Ingredient, UnitOfMeasure, RecipeIngr
 
 chefErik = Chef.objects.create_user('Erik','sanderej@rose-hulman.edu','bakeoff')
 chefAJ = Chef.objects.create_user('AJ','piergiaj@rose-hulman.edu','bakeoff')
+chefFelisha = Chef.objects.create_user('Felisha','sanderej@rose-hulman.edu','bakeoff')
+chefTrevor = Chef.objects.create_user('Trevor','piergiaj@rose-hulman.edu','bakeoff')
+chefKice = Chef.objects.create_user('Kice','sanderej@rose-hulman.edu','bakeoff')
+chefAlex = Chef.objects.create_user('Alex','piergiaj@rose-hulman.edu','bakeoff')
+chefJosh = Chef.objects.create_user('Josh','piergiaj@rose-hulman.edu','bakeoff')
 
 #Chef Pictures
 chefErik.chefpicture_set.create(path='https://file.ac/we4igBOMnuc/erik.jpg')
 chefAJ.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/aj.jpg')
+chefFelisha.chefpicture_set.create(path='https://file.ac/we4igBOMnuc/felisha.jpg')
+chefTrevor.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/trevor.jpg')
+chefKice.chefpicture_set.create(path='https://file.ac/we4igBOMnuc/kice.jpg')
+chefAlex.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/alex.jpg')
+chefJosh.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/josh.jpg')
 
 #Ingredients
 ingPep = Ingredient.objects.create(name='Pepperoni')
@@ -56,6 +66,14 @@ recPiz.save()
 recPicBee = recBee.recipepicture_set.create(path='https://file.ac/YSu901Am9qY/beef.jpg')
 recBee.mainPicture = recPicBee
 recBee.save()
+
+#Recipe ratings
+recPiz.review(chef=chefAJ,comment="Best pizza ever!",rating=10)
+recPiz.review(chef=chefFelisha,comment="Would be better without pepperoni.",rating=3)
+recPiz.review(chef=chefTrevor,comment="Too greasy for me...",rating=1)
+recPiz.review(chef=chefKice,comment="Great",rating=8)
+recPiz.review(chef=chefAlex,comment="Amazing",rating=10)
+recPiz.review(chef=chefJosh,comment="Good",rating=6)
 
 
 os.system("manage.py rebuild_index")

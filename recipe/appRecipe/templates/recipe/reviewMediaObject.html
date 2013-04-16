@@ -1,0 +1,11 @@
+{% load humanize %}
+<div class="media">
+    <a class="pull-left" href="{% url 'chefDetail' review.chef.id %}">
+      <img style="width:64px;height:64px;" src="{{ review.chef.chefpicture_set.get.path }}" >
+    </a>
+  <div class="media-body">
+    <div class="clearfix">{% include "recipe/starRating.html" with value=review.rating disabled="disabled" name=name only %} </div>
+    <div>{{review.comment}}</div>
+    <div><span class="muted">{{ review.dateCreated }} by </span><a href="{% url 'chefDetail' review.chef.id %}">{{ review.chef.username }}</a></div>
+  </div>
+</div>

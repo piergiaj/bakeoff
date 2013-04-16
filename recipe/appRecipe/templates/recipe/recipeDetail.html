@@ -35,16 +35,30 @@
       <div class="row-fluid">
         <div class="span12">
           <p>"{{ recipe.chefComment }}" - <a href="{% url 'chefDetail' recipe.chef.id %}">{{ recipe.chef.username }}</a></p>
+          <p>{% include "recipe/starRating.html" with value=recipe.averageRating disabled="disabled" name="mainStar" only %}&nbsp;&nbsp;(
+        <a href="{% url 'recipeReviews' recipe.id %}">{{recipe.review_set.count}} reviews</a>)</p>
         </div>
       </div>
     </div>
-    <div class="span4">
+    <div class="span3">
       <h4>Prep Time</h4>
       <p>{{ recipe.prepTimeString }}</p>
       <h4>Cook Time</h4>
       <p>{{ recipe.cookTimeString }}</p>
       <h4>Total Time</h4>
       <p>{{ recipe.totalTimeString }}</p>
+    </div>
+    <div class="span1">
+      <div class="btn-group btn-group-vertical">
+        {% if user.is_authenticated %}
+        {% if recipe.chef.id == user.id %}
+        <a class="btn" title="Edit Recipe"><i class="icon-edit"></i></a>
+        {% else %}
+        <a class="btn" title="Edit and Save to your Recipes"><i class="icon-edit"></i></a>
+        {% endif %}
+        {% endif %}
+        <a class="btn" title="Download PDF"><i class="icon-file"></i></a>
+      </div>
     </div>
   </div>
   <div class="row-fluid">
@@ -69,6 +83,28 @@
       {% else %}
       <p>No instructions.</p>
       {% endif %}
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <h2>Reviews</h2>
+      {% if recipe.review_set.count > 5 %}
+        <a href="{% url 'recipeReviews' recipe.id %}">Read all reviews.</a>
+      {% endif %}
+
+      {% if user.is_authenticated and user.id != recipe.chef.id %}
+      <a class="btn" title="Review" data-toggle="collapse" data-target="#addReview" ><i class="icon-comment"></i></a>
+      <form id="addReview" class="collapse" href="{% url 'addReview' recipe.id %}">
+        <input type="text" placeholder="Comment" value="{{review.comment}}" /><br />
+        {% include "recipe/starRating.html" with value=review.rating name="addStars" only %}<br />
+        <input type="submit" value="Submit" />
+      </form>
+      {% endif %}
+      {% for review in recipe.review_set.all|slice:"::-1"|slice:":5" %}
+        {% include "recipe/reviewMediaObject.html" with review=review name=forloop.counter0 %}
+      {% empty %}
+      <p>No reviews yet.</p>
+      {% endfor %}
     </div>
   </div>
 {% endblock content %}
