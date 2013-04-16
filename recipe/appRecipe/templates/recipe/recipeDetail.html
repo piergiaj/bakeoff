@@ -94,7 +94,7 @@
 
       {% if user.is_authenticated and user.id != recipe.chef.id %}
       <a class="btn" title="Review" data-toggle="collapse" data-target="#addReview" ><i class="icon-comment"></i></a>
-      <form id="addReview" class="collapse">
+      <form id="addReview" class="collapse" href="{% url 'addReview' recipe.id %}">
         <input type="text" placeholder="Comment" value="{{review.comment}}" /><br />
         {% include "recipe/starRating.html" with value=review.rating name="addStars" only %}<br />
         <input type="submit" value="Submit" />
