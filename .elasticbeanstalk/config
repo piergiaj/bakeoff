@@ -1,0 +1,13 @@
+[global]
+ApplicationName=bakeoff
+AwsCredentialFile=/home/piergiaj/.elasticbeanstalk/aws_credential_file
+DevToolsEndpoint=git.elasticbeanstalk.us-east-1.amazonaws.com
+EnvironmentName=bakeoff-env
+OptionSettingFile=/home/piergiaj/bakeoff/bakeoff/.elasticbeanstalk/optionsettings.bakeoff-env
+RdsDeletionPolicy=Delete
+RdsEnabled=Yes
+RdsSourceSnapshotName=
+Region=us-east-1
+ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
+SolutionStack=64bit Amazon Linux running Python
+

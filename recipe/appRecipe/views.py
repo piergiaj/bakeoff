@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
-from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient
+from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 
@@ -113,7 +113,7 @@ def login(request):
 @login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
-    form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'), ings=request.POST.get('ings'))
+    form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=request.POST.get('pics'))
     if form.is_valid():
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
@@ -122,29 +122,13 @@ def addRecipe(request):
       
       instructions = form.cleaned_data['instructions']
 
-      picData = request.FILES['picture'].read()
-      picName = request.FILES['picture'].name.split(".")
-      f = open("tmp."+picName[-1], 'w')
-      f.write(picData)
-      f.close()
-
-      im = Image.open("tmp."+picName[-1]) 
-      size = 64, 64
-      im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
-      im.thumbnail(size, Image.ANTIALIAS)
-      im.save("thumb.jpg", "JPEG")
-
-      api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
-
-      
-
       #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
 
       recipe = Recipe.objects.create(chef=get_object_or_404(Chef, pk=1), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
       
       recipe.instruction_set.create(text=instructions)
       for i in range(form.cleaned_data['inst']):
-        inst = request.POST.get('extra_field_'+str(i))
+        inst = request.POST.get('extra_field_'+str(i+1))
         recipe.instruction_set.create(text=inst)
 
 
@@ -161,33 +145,53 @@ def addRecipe(request):
           ingredient = Ingredient.objects.create(name=ingName)
         RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=amount,unit=unit)
 
+      api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+
       #make folder for pictures
       pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'
       api.post('/path/oper/mkdir',path=pictureFolder)
 
-      #upload picture
-      fileName = recipeName+'.'+picName[-1]
-      api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
-      api.post('/path/data'+pictureFolder, file=('thumb.jpg', open('thumb.'+picName[-1], 'r').read()))
+      for p in request.FILES.getlist('picture'):
+        picData = p.read()
+        picName = p.name.split(".")
+  
+        f = open("tmp."+picName[-1], 'w')
+        f.write(picData)
+        f.close()
 
-      #make picture object
-      rpic = recipe.recipepicture_set.create()
-      rpic.setPath(fileName)
-      rpic.setSmallPath('thumb.jpg')
+        im = Image.open("tmp."+picName[-1]) 
+        size = 64, 64
+        im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
+        im.thumbnail(size, Image.ANTIALIAS)
+        im.save("thumb.jpg", "JPEG")
 
-      #set this pic as recipe's main pic
-      recipe.mainPicture = rpic
+        #upload picture
+        fileName = recipeName+'_'+picName[0]+'.'+picName[-1]
+        api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
+        api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.'+picName[-1], 'r').read()))
+
+        #make picture object
+        rpic = recipe.recipepicture_set.create()
+        rpic.setPath(fileName)
+        rpic.setSmallPath(picName[0]+'_thumb.jpg')
+
+        #set this pic as recipe's main pic
+        recipe.mainPicture = rpic
       recipe.save()
 
       return HttpResponseRedirect('/recipes')
   else:
     form = forms.AddRecipe()
   ingredients = Ingredient.objects.all()
+
   ings = "["
   for i in ingredients:
     ings += '"'+i.name+'",'
   ings = ings[:-1]+']' 
-  return render(request, 'recipe/addRecipe.html', {'form':form, 'ingredients':ings})
+  
+  units = UnitOfMeasure.objects.all()
+
+  return render(request, 'recipe/addRecipe.html', {'form':form, 'ingredients':ings, 'units': units})
 
 def test(request):
   return render(request, 'recipe/test.html', {})

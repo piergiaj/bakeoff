@@ -15,20 +15,26 @@ class AddRecipe(forms.Form):
 	instructions = forms.CharField(widget=forms.Textarea)
 	inst = forms.IntegerField(widget=forms.HiddenInput())
 	ings = forms.IntegerField(widget=forms.HiddenInput())
+	pics = forms.IntegerField(widget=forms.HiddenInput())
 
 	def __init__(self, *args, **kwargs):
 		extra_fields = kwargs.pop('extra',0)
 		extra_ings = max(kwargs.pop('ings',0),2)
+		extra_pics = kwargs.pop('pics',0)
 
 		super(AddRecipe, self).__init__(*args, **kwargs)
 		self.fields['inst'].initial = extra_fields
 		self.fields['ings'].initial = extra_ings
+		self.fields['pics'].initial = extra_pics
 
 		for i in range(int(extra_fields)):
 			self.fields['extra_fields_{index}'.format(index=i)] = forms.CharField(required=False)
 
 		for i in range(int(extra_ings)):
 			self.fields['extra_ings_{index}'.format(index=i)] = forms.CharField(required=False)
+
+		for i in range(int(extra_pics)):
+			self.fields['id_picture_{index}'.format(index=i)] = forms.ImageField(required=False)
 
 
 #class Login(forms.Form):
