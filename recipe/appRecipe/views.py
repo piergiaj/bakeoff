@@ -142,7 +142,9 @@ def addRecipe(request):
 
       for i in range(form.cleaned_data['ings']):
         ing = request.POST.get('extra_ings_'+str(i))
-        print ing
+        amount = request.POST.get('amount_extra_ings_'+str(i))
+        unit = request.POST.get('unit_extra_ings_'+str(i))
+        print ing+" "+amount+" "+unit
         #RecipeIngredient.objects.create(recipe=recipe,ingredient=ingPep,amount=10,unit=UnitOfMeasure.objects.get(name='piece'))
 
       #make folder for pictures
