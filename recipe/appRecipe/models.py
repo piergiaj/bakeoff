@@ -89,7 +89,7 @@ class ChefPicture(Picture):
 class Review(models.Model):
   comment = models.CharField(max_length=500)
   rating = models.IntegerField()
-  dateCreated = models.DateTimeField(auto_now_add=True)
+  dateCreated = models.DateTimeField(auto_now=True)
   #Relations
   chef = models.ForeignKey(Chef)
   recipe = models.ForeignKey(Recipe)

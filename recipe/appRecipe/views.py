@@ -73,10 +73,18 @@ def addChef(request):
   return render(request, 'recipe/addChef.html', {'form':form})
 
 def addReview(request,recipe_id):
+  recipe = get_object_or_404(Recipe, pk=recipe_id)
   if request.method == 'POST':
     comment = request.POST.get('Comment')
     rating = request.POST.get('staraddStars')
-    
+    revList = recipe.review_set.filter(chef_id=request.user.id)
+    if revList.count() > 0:
+      review = revList[0]
+      review.comment = comment
+      review.rating = rating
+      review.save()
+    else:
+      recipe.review_set.create(comment=comment,rating=rating,chef_id=request.user.id)
     return HttpResponseRedirect('/recipes/'+str(recipe_id))
 
 ''' unused because using django's login function in urls
