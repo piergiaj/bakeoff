@@ -5,7 +5,7 @@ form_count = $("[name=inst]").val();
 $("#add-another").click(function() {
     element = $('</br><textarea cols="40" rows="5">');
     element.attr('name', 'extra_field_' + form_count);
-    $("#forms").append(element);
+    $("#steps").append(element);
     // build element and append it to our forms container
 
     form_count ++;
