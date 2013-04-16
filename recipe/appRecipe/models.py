@@ -54,6 +54,14 @@ class Instruction(models.Model):
 
 class Picture(models.Model):
   path = models.CharField(max_length=500)
+  smallpath = models.CharField(max_length=500)
+
+  def setSmallPath(self, fileName):
+    api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+    #creating link to picture
+    response = api.post('/link',path='RecipePicture/'+str(self.recipe.id)+'/'+fileName,read=True)
+    self.smallpath = response['href']+fileName
+    self.save()
 
   def setPath(self, fileName):
     api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')

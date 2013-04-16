@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from appRecipe import forms
 
 from smartfile import BasicClient
+
+import Image
 #import zlib
 
 def home(request):
@@ -101,7 +103,15 @@ def addRecipe(request):
 
       picData = request.FILES['picture'].read()
       picName = request.FILES['picture'].name.split(".")
-  
+      f = open("tmp."+picName[-1], 'w')
+      f.write(picData)
+      f.close()
+
+      im = Image.open("tmp."+picName[-1]) 
+      size = 64, 64
+      im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
+      im.thumbnail(size, Image.ANTIALIAS)
+      im.save("thumb.jpg", "JPEG")
 
       api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
 
@@ -122,11 +132,13 @@ def addRecipe(request):
 
       #upload picture
       fileName = recipeName+'.'+picName[-1]
-      api.post('/path/data'+pictureFolder, file=(fileName, picData))
+      api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
+      api.post('/path/data'+pictureFolder, file=('thumb.jpg', open('thumb.'+picName[-1], 'r').read()))
 
       #make picture object
       rpic = recipe.recipepicture_set.create()
       rpic.setPath(fileName)
+      rpic.setSmallPath('thumb.jpg')
 
       #set this pic as recipe's main pic
       recipe.mainPicture = rpic
