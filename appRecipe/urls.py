@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url, include
+from recipe import settings
 
 from appRecipe import views
 
@@ -25,4 +26,5 @@ urlpatterns = patterns('',
   url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
 
   url(r'^test/$', views.test),
+  url(r'^static/(P(<path>).*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
 )

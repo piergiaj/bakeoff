@@ -65,12 +65,12 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH,'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_PATH,'appRecipe/static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-#STATIC_URL = '/static/'
-STATIC_URL = 'http://infinite-garden-1600.herokuapp.com/'
+STATIC_URL = '/static/'
+#STATIC_URL = 'http://infinite-garden-1600.herokuapp.com/'
 
 #ADMIN_MEDIA_PREFIX = 'http://infinite-garden-1600.herokuapp.com/'
 
