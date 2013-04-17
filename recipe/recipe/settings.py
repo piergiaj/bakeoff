@@ -162,7 +162,7 @@ import os
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname('appRecipe'), 'whoosh_index'),
+        'PATH': os.path.join(os.path.dirname('appRecipe'), 'whooshindex'),
     },
 }
 
