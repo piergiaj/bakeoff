@@ -29,7 +29,7 @@
             <a id="userDropDown" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button">{{ user.username }}<b class="caret" ></b>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="userDropDown">
-              <li><a href="{% url 'addRecipe' %}">New Recipe</li>
+              <li><a href="{% url 'addRecipe' %}">New Recipe</a></li>
               <li><a href="{% url 'chefDetail' user.id %}">Profile</a></li>
               <li class="divider" />
               <li><a href="/logout/">Logout</a></li>
@@ -37,6 +37,7 @@
           </li>            
           {% else %}
           <li><a href='/login/'>Login</a></li>
+          <li><a href='/chefs/add/'>Register</a></li>
           {% endif %}
         </ul>
       </div>

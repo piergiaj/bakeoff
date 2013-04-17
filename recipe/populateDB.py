@@ -2,7 +2,7 @@
 import os
 import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recipe.settings")
-from appRecipe.models import Recipe, Chef, Ingredient, UnitOfMeasure, RecipeIngredient, Instruction
+from appRecipe.models import Recipe, Chef, Ingredient, UnitOfMeasure, RecipeIngredient, Instruction, ChefPicture
 
 #Chefs
 #chefErik = Chef.objects.create(name='Erik',email='sanderej@rose-hulman.edu',password='bakeoff')
@@ -17,13 +17,13 @@ chefAlex = Chef.objects.create_user('Alex','piergiaj@rose-hulman.edu','bakeoff')
 chefJosh = Chef.objects.create_user('Josh','piergiaj@rose-hulman.edu','bakeoff')
 
 #Chef Pictures
-chefErik.chefpicture_set.create(path='https://file.ac/we4igBOMnuc/erik.jpg')
-chefAJ.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/aj.jpg')
-chefFelisha.chefpicture_set.create(path='https://file.ac/we4igBOMnuc/felisha.jpg')
-chefTrevor.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/trevor.jpg')
-chefKice.chefpicture_set.create(path='https://file.ac/we4igBOMnuc/kice.jpg')
-chefAlex.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/alex.jpg')
-chefJosh.chefpicture_set.create(path='https://file.ac/sCJYAvF3_BA/josh.jpg')
+ChefPicture.objects.create(chef=chefErik,path='https://file.ac/we4igBOMnuc/erik.jpg')
+ChefPicture.objects.create(chef=chefAJ,path='https://file.ac/sCJYAvF3_BA/aj.jpg')
+ChefPicture.objects.create(chef=chefFelisha,path='https://file.ac/we4igBOMnuc/erik.jpg')
+ChefPicture.objects.create(chef=chefTrevor,path='https://file.ac/sCJYAvF3_BA/trevor.jpg')
+ChefPicture.objects.create(chef=chefKice,path='https://file.ac/we4igBOMnuc/erik.jpg')
+ChefPicture.objects.create(chef=chefAlex,path='https://file.ac/sCJYAvF3_BA/alex.jpg')
+ChefPicture.objects.create(chef=chefJosh,path='https://file.ac/sCJYAvF3_BA/josh.jpg')
 
 #Ingredients
 ingPep = Ingredient.objects.create(name='Pepperoni')

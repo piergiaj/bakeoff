@@ -84,7 +84,7 @@ class RecipePicture(Picture):
   
 class ChefPicture(Picture):
   #Relations
-  chef = models.ForeignKey(Chef)
+  chef = models.OneToOneField(Chef)
   
 class Review(models.Model):
   comment = models.CharField(max_length=500)
