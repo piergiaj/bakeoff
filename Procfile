@@ -1,1 +1,1 @@
-web: gunicorn recipe.wsgi
+web: python manage.py collectstatic --noinput; gunicorn_django --bind=0.0.0.0:8000 recipe/settings.py
