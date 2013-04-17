@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'appRecipe',
     'haystack',
+    'gunicorn',
 )
 
 # A sample logging configuration. The only tangible logging
