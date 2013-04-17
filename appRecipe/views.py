@@ -12,11 +12,13 @@ from appRecipe import forms
 from smartfile import BasicClient
 
 import Image
+import os
 #import zlib
 
 def home(request):
   recipe_list = Recipe.objects.all()
   chef_list = Chef.objects.all()
+  os.system("man python")
   recipe_picture_list = RecipePicture.objects.all()
   context = { 'chef_list' : chef_list,
               'recipe_list': recipe_list,

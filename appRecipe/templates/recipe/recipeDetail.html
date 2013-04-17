@@ -35,8 +35,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p>"{{ recipe.chefComment }}" - <a href="{% url 'chefDetail' recipe.chef.id %}">{{ recipe.chef.username }}</a></p>
-          <p>{% include "recipe/starRating.html" with value=recipe.averageRating disabled="disabled" name="mainStar" only %}&nbsp;&nbsp;(
-        <a href="{% url 'recipeReviews' recipe.id %}">{{recipe.review_set.count}} reviews</a>)</p>
+          <p>{% include "recipe/starRating.html" with value=recipe.averageRating disabled="disabled" name="mainStar" only %}&nbsp;&nbsp;(&nbsp;<a href="{% url 'recipeReviews' recipe.id %}">{{recipe.review_set.count}} reviews</a>&nbsp;)</p>
         </div>
       </div>
     </div>
