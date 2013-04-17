@@ -1,0 +1,10 @@
+{% load humanize %}
+<div class="media">
+  <a class="pull-left" href="{% url 'chefDetail' chef.id %}">
+    <img style="width:64px;height:64px;" src="{{ chef.chefpicture.path }}" >
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading"><a href="{% url 'chefDetail' chef.id %}">{{ chef.username }}</a></h4>
+    <p>Chef since {{ chef.date_joined|naturaltime }}</p>
+  </div>
+</div>

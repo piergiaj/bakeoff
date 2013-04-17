@@ -1,3 +1,10 @@
+pip install Django
+pip install oauthlib
+pip install requests
+pip install request_oauthlib
 pip install smartfile
 pip install whoosh
 pip install -e git+https://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
+pip install PIL
+
+pip install gunicorn

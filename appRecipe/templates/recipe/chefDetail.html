@@ -1,0 +1,13 @@
+{% extends "recipe/base.html" %}
+
+{% block title %}{{ chef.username }}{% endblock title %}
+
+{% block content %}
+  <h1>{{ chef.username }}</h1>
+  <h2>Recipes</h2>
+  <ul>
+  {% for recipe in chef.recipe_set.all %}
+    <li><a href="{% url 'recipeDetail' recipe.id %}">{{ recipe.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% endblock content %}
