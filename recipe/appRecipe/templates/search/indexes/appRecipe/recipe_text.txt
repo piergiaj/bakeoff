@@ -1,5 +1,0 @@
-{{ object.name }}
-{{ object.chef.username }}
-{% for ing in object.ingredients.all %}
-  {{ ing.name }}
-{% endfor %}

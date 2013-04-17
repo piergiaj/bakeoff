@@ -1,1 +1,3 @@
-*.pyc.elasticbeanstalk/.elasticbeanstalk/
+venv
+*.pyc
+tmp.jpg

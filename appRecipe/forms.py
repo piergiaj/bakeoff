@@ -1,9 +1,11 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 
-class AddChef(forms.Form):
-	name = forms.CharField(max_length=50, required=True)
+class AddChef(UserCreationForm):
+	first_name = forms.CharField(required=True)
+	last_name = forms.CharField(required=True)
 	email = forms.EmailField(required=True)
-	password = forms.CharField(required=True, widget=forms.PasswordInput)
+	chef_picture = forms.ImageField(required=False)
 
 
 class AddRecipe(forms.Form):

@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url, include
+from recipe import settings
 
 from appRecipe import views
 
@@ -15,7 +16,8 @@ urlpatterns = patterns('',
 
   url(r'^chefs/$', views.chefIndex, name='chefIndex'),
   url(r'^chefs/(?P<chef_id>\d+)/$', views.chefDetail, name='chefDetail'),
-  url(r'^chefs/add/$', views.addChef, name='addChef'), 
+  url(r'^chefs/add/$', views.addChef, name='addChef'),
+#  url(r'^chefs/edit/$', views.editChef, name='editChef'), 
   url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'recipe/login.html'}),
   url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page':'/'}),
 
@@ -24,4 +26,9 @@ urlpatterns = patterns('',
   url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
 
   url(r'^test/$', views.test),
+
+  url(r'^staticfiles/(?P<path>.*)$',
+    'django.views.static.serve',
+    {'document_root':settings.STATIC_ROOT}),
+
 )

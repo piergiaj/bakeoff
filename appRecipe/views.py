@@ -4,6 +4,8 @@ from django.shortcuts import render, get_object_or_404 #, get_list_or_404
 from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
 
 from appRecipe import forms
 
@@ -60,18 +62,33 @@ def addChef(request):
   if request.method == 'POST':
     form = forms.AddChef(request.POST)
     if form.is_valid():
-      name = form.cleaned_data['name']
+      username = form.cleaned_data['username']
+      password = form.cleaned_data['password1']
       email = form.cleaned_data['email']
-      password = form.cleaned_data['password']
-
-      chef = Chef(name=name, email=email, password=password)
-      chef.save()
-
-      return HttpResponseRedirect('/chefs')
+      newChef = Chef.objects.create_user(username,email,password)
+      newChef.first_name = form.cleaned_data['first_name']
+      newChef.last_name = form.cleaned_data['last_name']
+      newChef.save()
+      user = authenticate(username=username,password=password)
+      # assuming authenticate works
+      login(request, user)
+      return HttpResponseRedirect('/chefs/'+str(newChef.id))
   else:
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
 
+''' need to change this to a simpler form
+def editChef(request):
+  if request.method == 'POST':
+    form = UserChangeForm(request.POST)
+    if form.is_valid():
+      print form.cleaned_data
+      return HttpResponseRedirect('/chefs/')#+str(newChef.id))
+  else:
+    form = UserChangeForm()
+  return render(request, 'recipe/editChef.html', {'form':form})'''
+
+@login_required(login_url='/login/')
 def addReview(request,recipe_id):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
   if request.method == 'POST':
@@ -124,7 +141,7 @@ def addRecipe(request):
 
       #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
 
-      recipe = Recipe.objects.create(chef=get_object_or_404(Chef, pk=1), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
+      recipe = Recipe.objects.create(chef=get_object_or_404(Chef, pk=request.user.id), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
       
       recipe.instruction_set.create(text=instructions)
       for i in range(form.cleaned_data['inst']):
@@ -136,7 +153,7 @@ def addRecipe(request):
         ingName = request.POST.get('extra_ings_'+str(i))
         amount = request.POST.get('amount_extra_ings_'+str(i))
         unitName = request.POST.get('unit_extra_ings_'+str(i))
-        unit = UnitOfMeasure.objects.get(name=unitName)
+        unit = UnitOfMeasure.objects.create(name=unitName)
 
         ingList = Ingredient.objects.filter(name=ingName)
         if ingList.count()>0:

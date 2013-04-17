@@ -7,7 +7,7 @@
 {% block content %}
 
 <form action="/recipes/add/" method="post" enctype="multipart/form-data">{% csrf_token %}
-    {{ form.non_field_errors }}
+	{{ form.non_field_errors }}
     <div class="fieldWrapper">
         {{ form.recipe_Name.errors }}
         <label for="id_recipe_Name">Recipe Name:</label>
@@ -41,33 +41,33 @@
     <div id="ingredients">
 
 
-        <label for="id_extra_ings_0">Ingredients:</label>
-        <div class="fieldWrapper">
-            {{ form.extra_ings_0.errors }}
-            <input placeholder="Ingredient Name" id="{{ form.extra_ings_0.html_name }}" name="{{ form.extra_ings_0.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off"> <input type="text" placeholder="Amount" id="amount_{{ form.extra_ings_0.html_name }}" name="amount_{{ form.extra_ings_0.html_name }}"> <select id="unit_{{ form.extra_ings_0.html_name }}" name="unit_{{ form.extra_ings_0.html_name }}">
-                    {% for u in units %}
-                    <option value="{{ u.name }}">{{ u.name }}</option>
-                    {% endfor %}
-                    </select>
-            
-        </div>
-        <div class="fieldWrapper">
-            {{ form.extra_ings_1.errors }}
-            <input placeholder="Ingredient Name" id="{{ form.extra_ings_1.html_name }}" name="{{ form.extra_ings_1.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off"> <input type="text" placeholder="Amount" id="amount_{{ form.extra_ings_1.html_name }}" name="amount_{{ form.extra_ings_1.html_name }}"> <select id="unit_{{ form.extra_ings_1.html_name }}" name="unit_{{ form.extra_ings_1.html_name }}">
-                    {% for u in units %}
-                    <option value="{{ u.name }}">{{ u.name }}</option>
-                    {% endfor %}
-                    </select>
-        </div>
+		<label for="id_extra_ings_0">Ingredients:</label>
+    	<div class="fieldWrapper">
+	        {{ form.extra_ings_0.errors }}
+	        <input placeholder="Ingredient Name" id="{{ form.extra_ings_0.html_name }}" name="{{ form.extra_ings_0.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off"> <input type="text" placeholder="Amount" id="amount_{{ form.extra_ings_0.html_name }}" name="amount_{{ form.extra_ings_0.html_name }}"> <select id="unit_{{ form.extra_ings_0.html_name }}" name="unit_{{ form.extra_ings_0.html_name }}">
+  					{% for u in units %}
+  					<option value="{{ u.name }}">{{ u.name }}</option>
+  					{% endfor %}
+					</select>
+	        
+	    </div>
+	    <div class="fieldWrapper">
+	        {{ form.extra_ings_1.errors }}
+	        <input placeholder="Ingredient Name" id="{{ form.extra_ings_1.html_name }}" name="{{ form.extra_ings_1.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off"> <input type="text" placeholder="Amount" id="amount_{{ form.extra_ings_1.html_name }}" name="amount_{{ form.extra_ings_1.html_name }}"> <select id="unit_{{ form.extra_ings_1.html_name }}" name="unit_{{ form.extra_ings_1.html_name }}">
+  					{% for u in units %}
+  					<option value="{{ u.name }}">{{ u.name }}</option>
+  					{% endfor %}
+					</select>
+	    </div>
 
 
     </div>
     <div id="unitss" style="display:none;">
-        {% for u in units %}
-                    <option value="{{ u.name }}">{{ u.name }}</option>
-                    {% endfor %}
+    	{% for u in units %}
+  					<option value="{{ u.name }}">{{ u.name }}</option>
+  					{% endfor %}
     </div>
-    <button id="add-ing" type="button">Add Ingredient</button>
+	<button id="add-ing" type="button">Add Ingredient</button>
 
     <div id="steps">
     <div class="fieldWrapper">
