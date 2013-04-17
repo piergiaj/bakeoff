@@ -1,8 +1,16 @@
 Django==1.5.1
+Jinja2==2.6
 PIL==1.1.7
 Whoosh==2.4.1
 distribute==0.6.34
--e git+https://github.com/toastdriven/django-haystack.git@7263866d386a6c26e5e73ba923a7c64e1fc2a5cf#egg=django_haystack-dev
+django-haystack==2.0.0-beta
+gunicorn==0.17.2
+heroku==0.1.2
+honcho==0.4.0
 oauthlib==0.4.0
+pycrypto==2.6
+python-dateutil==1.5
 requests==1.2.0
+requests-oauthlib==0.3.0
 smartfile==2.1-1
+virtualenv==1.9.1
