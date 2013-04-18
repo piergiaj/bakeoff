@@ -221,4 +221,8 @@ def pdf(request):
   args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/']
   args.append(pdfPath)
   os.system(" ".join(args))
+
+  api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+  api.post('/path/data', file=('pdf.pdf', open(pdfPath, 'r').read()))
+
   return HttpResponseRedirect('/')
