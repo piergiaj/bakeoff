@@ -30,7 +30,7 @@ def home(request):
 
 def recipeIndex(request, sortby = 'HighestRated'):
   if sortby == 'Newest':
-    recipe_list = Recipe.objects.all()
+    recipe_list = Recipe.objects.all().order_by('id').reverse()
   else:
     recipe_list = Recipe.objects.all().order_by('averageRating').reverse()
     sortby = 'HighestRated'
