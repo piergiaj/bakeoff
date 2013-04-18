@@ -33,6 +33,7 @@ def home(request):
 
 def recipeIndex(request):
   recipe_list = Recipe.objects.all()
+
   recipesPerPage = 5
   paginator = Paginator(recipe_list, recipesPerPage)
 
@@ -54,6 +55,7 @@ def recipeIndex(request):
   if (paginator.num_pages > 1):
     startPage = max(1,page-2)
     finishPage = min(startPage+4,paginator.num_pages)
+    startPage = max(1, finishPage - 4)
     pages = range(startPage,finishPage + 1)
 
   context = { 'recipe_list': recipes,
