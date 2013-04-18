@@ -27,8 +27,8 @@
   <li {% if showrecipes == "Originals" %}class="active"{%endif%}>
     <a href="{% url 'chefDetailShowRecipes' chef.id 'Originals' %}">Originals</a>
   </li>
-  <li {% if showrecipes == "Modified" %}class="active"{%endif%}>
-    <a href="{% url 'chefDetailShowRecipes' chef.id 'Modified' %}">Modified</a>
+  <li {% if showrecipes == "Clones" %}class="active"{%endif%}>
+    <a href="{% url 'chefDetailShowRecipes' chef.id 'Clones' %}">Clones</a>
   </li>
   <li {% if showrecipes == "Favorites" %}class="active"{%endif%}>
     <a href="{% url 'chefDetailShowRecipes' chef.id 'Favorites' %}">Favorites</a>
