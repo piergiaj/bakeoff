@@ -9,12 +9,12 @@
         <div id="myCarousel" class="carousel slide">
           <div class="carousel-inner">
             <div class="active item">
-              <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture">
+              <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture" class="img-rounded">
             </div>
             {% for picture in recipe.recipepicture_set.all %}
               {% if picture != recipe.mainPicture %}
                 <div class="item">
-                  <img src="{{ picture.path }}" alt="Recipe Picture" />
+                  <img src="{{ picture.path }}" alt="Recipe Picture" class="img-rounded"/>
                 </div>
               {% endif %}
             {% endfor %}
@@ -23,7 +23,7 @@
           <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
       {% else %}
-        <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture">
+        <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture" class="img-polaroid">
       {% endif %}
     </div>
     <div class="span4">
