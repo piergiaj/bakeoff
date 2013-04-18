@@ -17,6 +17,7 @@ from threading import Thread
 import Image
 import os
 import sys
+import subprocess
 #import zlib
 
 def home(request):
@@ -160,9 +161,11 @@ def createPDF(api,ids, pictureFolder, recipeName):
   scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
   page = 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/'
-  args = [scriptPath, "--footer-center", '[page]', page]
-  args.append(pdfPath)
-  os.system(" ".join(args))
+  args = [scriptPath, page, pdfPath]
+  subprocess.call(args)
+  #args.append(pdfPath)
+  #print " ".join(args)
+  #os.system(" ".join(args))
   fd = open(pdfPath, 'r').read()
   api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))
 
