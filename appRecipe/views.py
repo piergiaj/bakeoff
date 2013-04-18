@@ -142,7 +142,7 @@ def getPic(request, pic_name):
 
 def addChef(request):
   if request.method == 'POST':
-    form = forms.AddChef(request.POST)
+    form = forms.AddChef(request.POST, request.FILES)
     if form.is_valid():
       username = form.cleaned_data['username']
       password = form.cleaned_data['password1']
@@ -152,6 +152,39 @@ def addChef(request):
       newChef.last_name = form.cleaned_data['last_name']
       newChef.save()
       user = authenticate(username=username,password=password)
+
+
+      api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+
+      #make folder for pictures
+      pictureFolder = '/ChefPicture/'+newChef.id+'/'
+      api.post('/path/oper/mkdir',path=pictureFolder)
+
+      p = request.FILES['picture']
+      picName = p.name.split(".")
+      tempPictureName = "tmp."+picName[-1]
+      with open(tempPictureName, 'wb+') as destination:
+        for chunk in p.chunks():
+          destination.write(chunk)
+
+      destination.close()
+      #im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
+      im = Image.open(tempPictureName)
+      size = 64, 64
+      im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
+      im.thumbnail(size, Image.ANTIALIAS)
+      im.save("thumb.jpg", "JPEG")
+
+      #upload picture
+      fileName = username+'_'+picName[0]+'.'+picName[-1]
+      api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
+      api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
+
+      rpic = recipe.chefpicture_set.create()
+      t = Thread(target=createLink, args=(rpic,fileName,picName))
+      t.start()
+
+
       # assuming authenticate works
       login(request, user)
       return HttpResponseRedirect('/chefs/'+str(newChef.id))
