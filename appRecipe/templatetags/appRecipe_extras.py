@@ -5,3 +5,7 @@ register = template.Library()
 def classname(obj):
   classname = obj.__class__.__name__
   return classname
+
+@register.filter    
+def subtract(value, arg):
+    return value - arg

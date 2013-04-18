@@ -4,6 +4,8 @@ import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recipe.settings")
 from appRecipe.models import Recipe, Chef, Ingredient, UnitOfMeasure, RecipeIngredient, Instruction, ChefPicture
 
+os.system("python manage.py rebuild_index")
+
 #Chefs
 #chefErik = Chef.objects.create(name='Erik',email='sanderej@rose-hulman.edu',password='bakeoff')
 #chefAJ = Chef.objects.create(name='AJ',email='piergiaj@rose-hulman.edu',password='bakeoff')

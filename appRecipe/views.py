@@ -254,7 +254,7 @@ def addRecipe(request):
         ingName = request.POST.get('extra_ings_'+str(i))
         amount = request.POST.get('amount_extra_ings_'+str(i))
         unitName = request.POST.get('unit_extra_ings_'+str(i))
-        unit = UnitOfMeasure.objects.create(name=unitName)
+        unit = UnitOfMeasure.objects.get(name=unitName)
 
         ingList = Ingredient.objects.filter(name=ingName)
         if ingList.count()>0:
@@ -287,7 +287,7 @@ def addRecipe(request):
         #upload picture
         fileName = recipeName+'_'+picName[0]+'.'+picName[-1]
         api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
-        api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.'+picName[-1], 'r').read()))
+        api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
 
         #make picture object
         rpic = recipe.recipepicture_set.create()
@@ -328,3 +328,81 @@ def pdf(request):
 
   return HttpResponseRedirect('/')'''
 
+def editRecipe(request,recipeID):
+  if request.method == 'POST':
+    form = forms.AddRecipe(request.POST, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=request.POST.get('pics'))
+    if form.is_valid():
+      recipeName = form.cleaned_data['recipe_Name']
+      prepTime = form.cleaned_data['prep_Time']
+      cookTime = form.cleaned_data['cook_Time']
+      comments = form.cleaned_data['comments']
+      
+      instructions = form.cleaned_data['instructions']
+
+      #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
+      recipe = Recipe.objects.get(id=recipeID)
+      recipe.name = recipeName
+      recipe.prepTime = prepTime
+      recipe.cookTime = cookTime
+      recipe.chefComment = comments
+
+      for i in recipe.instruction_set.all():
+        i.delete()
+
+      for i in RecipeIngredient.objects.filter(recipe_id=recipeID):
+        i.delete()
+
+      recipe.instruction_set.create(text=instructions)
+      for i in range(form.cleaned_data['inst']):
+        inst = request.POST.get('extra_fields_'+str(i))
+        recipe.instruction_set.create(text=inst)
+
+
+      for i in range(form.cleaned_data['ings']):
+        ingName = request.POST.get('extra_ings_'+str(i))
+        amount = request.POST.get('amount_extra_ings_'+str(i))
+        unitName = request.POST.get('unit_extra_ings_'+str(i))
+        unit = UnitOfMeasure.objects.get(name=unitName)
+
+        ingList = Ingredient.objects.filter(name=ingName)
+        if ingList.count()>0:
+          ingredient = ingList[0]
+        else:
+          ingredient = Ingredient.objects.create(name=ingName)
+        RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=amount,unit=unit)
+
+      recipe.save()
+
+      return HttpResponseRedirect('/recipes/'+recipeID+'/')
+  else:
+    recipe = Recipe.objects.get(id=recipeID)
+    initial={'recipe_Name':recipe.name,
+             'prep_Time':recipe.prepTime,
+             'cook_Time':recipe.cookTime,
+              'comments':recipe.chefComment}
+
+    j = 0
+    for i in recipe.instruction_set.all():
+      initial['instructions' if j == 0 else 'extra_fields_'+str(j-1)] = i.text
+      j = j+1
+
+    form = forms.AddRecipe(initial=initial, extra=recipe.instruction_set.count()-1, ings=len(RecipeIngredient.objects.filter(recipe_id=recipeID)))
+  
+  ingredients = Ingredient.objects.all()
+
+  ings = "["
+  for i in ingredients:
+    ings += '"'+i.name+'",'
+  ings = ings[:-1]+']' 
+  
+  units = UnitOfMeasure.objects.all()
+
+  ingredientsInitial = []
+  for i in RecipeIngredient.objects.filter(recipe_id=recipeID):
+        ingredientsInitial.append({'name':i.ingredient.name,'amount':i.amount,'unit':i.unit})
+
+  return render(request, 'recipe/editRecipe.html', {'form':form, 
+                                                    'ingredients':ings,
+                                                    'units': units,
+                                                    'length':len(form.fields)-recipe.instruction_set.count()-2,
+                                                    'initialIngredients':ingredientsInitial})

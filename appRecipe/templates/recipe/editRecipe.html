@@ -1,12 +1,12 @@
 {% extends "recipe/base.html" %}
 
+{% load appRecipe_extras %}
 
-
-{% block title %}Add New Recipe{% endblock title %}
+{% block title %}Edit {{name}}{% endblock title %}
 
 {% block content %}
 
-<form action="/recipes/add/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 	{{ form.non_field_errors }}
     <div class="fieldWrapper">
         {{ form.recipe_Name.errors }}
@@ -28,29 +28,24 @@
         <label for="id_comments">Chef Comments:</label>
         {{ form.comments }}
     </div>
-    <div id="pics" class="fieldWrapper">
-        {{ form.picture.errors }}
-        <label for="id_picture">Picture:</label>
-        {{ form.picture }}
-    </div>
-    <button id="add-pic" type="button">Add Another Picture</button>
-
-
-
-
+   
     <div id="ingredients">
 
 
 		<label for="id_extra_ings_0">Ingredients:</label>
+
+        {% for i in initialIngredients %}
     	<div class="fieldWrapper">
-	        {{ form.extra_ings_0.errors }}
-	        <input placeholder="Ingredient Name" id="{{ form.extra_ings_0.html_name }}" name="{{ form.extra_ings_0.html_name }}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off"> <input type="text" placeholder="Amount" id="amount_{{ form.extra_ings_0.html_name }}" name="amount_{{ form.extra_ings_0.html_name }}"> <select id="unit_{{ form.extra_ings_0.html_name }}" name="unit_{{ form.extra_ings_0.html_name }}">
+	        <input placeholder="Ingredient Name" value="{{i.name}}" id="extra_ings_{{forloop.counter0}}" name="extra_ings_{{forloop.counter0}}" type="text" data-provide="typeahead" data-source="{{ ingredients }}" autocomplete="off"> <input type="text" placeholder="Amount" value="{{i.amount}}" id="amount_extra_ings_{{forloop.counter0}}" name="amount_extra_ings_{{forloop.counter0}}"> <select id="unit_extra_ings_{{forloop.counter0}}" name="unit_extra_ings_{{forloop.counter0}}">
   					{% for u in units %}
-  					<option value="{{ u.name }}">{{ u.name }}</option>
+
+  					<option {%if u.name in i.unit.name %}selected{%endif%} value="{{ u.name }}">{{ u.name }}</option>
   					{% endfor %}
 					</select>
 	        
 	    </div>
+
+        {% endfor %}
 
 
     </div>
@@ -67,6 +62,14 @@
         <label for="id_instructions">Step 1:</label>
         {{ form.instructions }}
     </div>
+    {% for field in form %}
+    {% if 'field' in field.html_name %}
+    <div class="fieldWrapper">
+        <label>Step {{ forloop.counter|subtract:length }}:</label> {{ field }}
+    </div>
+    {% endif %}
+{% endfor %}
+
     <input id="ingre" type="hidden" value="{{ingredients}}">
 </div>
 <button id="add-another" type="button">Add Step</button>
