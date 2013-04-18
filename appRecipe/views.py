@@ -225,11 +225,26 @@ def createLink(rpic,fileName,picName):
   rpic.setPath(fileName)
   rpic.setSmallPath(picName[0]+'_thumb.jpg')
 
+def validateForm(request, ings, extra):
+  for i in range(int(extra)):
+    inst = request.POST.get('extra_field_'+str(i+1))
+    if inst is None:
+      return False
+
+
+  for i in range(int(ings)):
+    ingName = request.POST.get('extra_ings_'+str(i))
+    amount = request.POST.get('amount_extra_ings_'+str(i))
+    unitName = request.POST.get('unit_extra_ings_'+str(i))
+    if ingName is None or not isinstance(amount, int):
+      return False
+
+
 @login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
     form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=request.POST.get('pics'))
-    if form.is_valid():
+    if form.is_valid() and validateForm(request, request.POST.get('ings'), request.POST.get('inst')):
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
       cookTime = form.cleaned_data['cook_Time']
@@ -329,7 +344,7 @@ def pdf(request):
 def editRecipe(request,recipeID):
   if request.method == 'POST':
     form = forms.AddRecipe(request.POST, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=request.POST.get('pics'))
-    if form.is_valid():
+    if form.is_valid() and validateForm(request, request.POST.get('ings'), request.POST.get('inst')):
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
       cookTime = form.cleaned_data['cook_Time']
@@ -398,7 +413,7 @@ def editRecipe(request,recipeID):
   ings = ings[:-1]+']' 
   
   units = UnitOfMeasure.objects.all()
-
+  recipe = Recipe.objects.get(id=recipeID)
   ingredientsInitial = []
   for i in RecipeIngredient.objects.filter(recipe_id=recipeID):
         ingredientsInitial.append({'name':i.ingredient.name,'amount':i.amount,'unit':i.unit})

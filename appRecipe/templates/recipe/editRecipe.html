@@ -65,7 +65,7 @@
     {% for field in form %}
     {% if 'field' in field.html_name %}
     <div class="fieldWrapper">
-        <label>Step {{ forloop.counter|subtract:length }}:</label> {{ field }}
+        <label>Step {{ forloop.counter|subtract:length|add:1 }}:</label> {{ field }}
     </div>
     {% endif %}
 {% endfor %}
