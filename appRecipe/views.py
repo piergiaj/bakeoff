@@ -34,6 +34,7 @@ def recipeIndex(request):
   page = request.GET.get('page')
   try:
     recipes = paginator.page(page)
+    page = int(page)
   except PageNotAnInteger:
     # if page is not an integer, deliver first page.
     recipes = paginator.page(1)
@@ -43,8 +44,13 @@ def recipeIndex(request):
     recipes = paginator.page(paginator.num_pages)
     page = paginator.num_pages
 
-  startPage = max(1,page-2)
-  finishPage = min(startPage+6)
+  pages = None
+  
+  if (paginator.num_pages > 1):
+    startPage = max(1,page-2)
+    finishPage = min(startPage+4,paginator.num_pages)
+    pages = range(startPage,finishPage + 1)
+
   context = { 'recipe_list': recipes,
               'pages':pages,}
   return render(request, 'recipe/recipeIndex.html',context)
