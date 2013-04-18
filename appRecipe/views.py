@@ -32,7 +32,7 @@ def home(request):
               'recipe_picture_list' : recipe_picture_list, }
   return render(request, 'recipe/home.html', context)
 
-def recipeIndex(request, sortby):
+def recipeIndex(request, sortby = 'HighestRated'):
   if sortby == 'Newest':
     recipe_list = Recipe.objects.all().reverse()
   else:
