@@ -28,7 +28,7 @@ def home(request):
 
 def recipeIndex(request):
   recipe_list = Recipe.objects.all()
-  recipesPerPage = 10
+  recipesPerPage = 5
   paginator = Paginator(recipe_list, recipesPerPage)
 
   page = request.GET.get('page')
@@ -41,7 +41,7 @@ def recipeIndex(request):
     # If page is out of range (e.g. 9999), deliver last page of results.
     recipes = paginator.page(paginator.num_pages)
 
-  context = { 'recipe_list': recipe_list,}
+  context = { 'recipe_list': recipes,}
   return render(request, 'recipe/recipeIndex.html',context)
   
 def recipeDetail(request, recipe_id):

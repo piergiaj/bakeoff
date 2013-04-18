@@ -10,4 +10,14 @@
   {% empty %}
     <p>No recipes are available.</p>
   {% endfor %}
+<div class="pagination">
+  <ul>
+    {% if recipe_list.has_previous %}
+      <li><a href="?page={{recipe_list.previous_page_number}}">Prev</a></li>
+    {% endif %}
+    {% if recipe_list.has_next %}
+      <li><a href="?page={{recipe_list.next_page_number}}">Next</a></li>
+    {% endif %}
+  </ul>
+</div>
 {% endblock content %}
