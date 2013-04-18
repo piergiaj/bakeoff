@@ -1,1 +1,1 @@
-web: python manage.py collectstatic; gunicorn recipe.wsgi
+web: gunicorn recipe.wsgi
