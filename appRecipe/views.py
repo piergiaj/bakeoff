@@ -34,10 +34,10 @@ def recipeIndex(request):
   page = request.GET.get('page')
   try:
     recipes = paginator.page(page)
-  except: PageNotAnInteger:
+  except PageNotAnInteger:
     # if page is not an integer, deliver first page.
     recipes = paginator.page(1)
-  except: EmptyPage:
+  except EmptyPage:
     # If page is out of range (e.g. 9999), deliver last page of results.
     recipes = paginator.page(paginator.num_pages)
 
