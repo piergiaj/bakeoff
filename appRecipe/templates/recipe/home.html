@@ -14,12 +14,15 @@
     </ol>
     <div class="carousel-inner">
       {% for recipe_picture in recipe_picture_list %}
+      
         <div class="{% if forloop.first %}active {% endif %}item">
+          <a href="{% url 'recipeDetail' recipe_picture.recipe.id %}">
           <img src="{{ recipe_picture.path }}" alt="pic" />
           <div class="carousel-caption">
             <h4>{{ recipe_picture.recipe.name }}</h4>
-            <p>{{ recipe_picture.recipe.chefComment }}</p>
+            <p>"{{ recipe_picture.recipe.chefComment }}" - {{ recipe_picture.recipe.chef.username }}</p>
           </div>
+        </a>
         </div>
       {% endfor %}
     </div>

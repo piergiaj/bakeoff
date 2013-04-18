@@ -112,6 +112,8 @@ def chefDetail(request, chef_id, showrecipes = 'Originals'):
     fav_list = Chef_favoriteRecipes.objects.filter(chef_id=chef_id).order_by('id').reverse()
     for fav in fav_list:
       recipe_list.append(fav.recipe)
+  elif showrecipes == 'Modified':
+    recipe_list = chef.recipe_set.all().exclude(previousVersion__exact=None)
   else: # Originals
     recipe_list = chef.recipe_set.all().filter(previousVersion__exact=None)
     showrecipes = 'Originals'
@@ -356,7 +358,15 @@ def editRecipe(request,recipeID):
 
       recipe = Recipe.objects.get(id=recipeID)
       if request.user.id != recipe.chef_id:
-        recipe = Recipe.objects.create(chef_id=request.user.id, name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)
+        newRecipe = Recipe.objects.create(chef_id=request.user.id, name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)
+        newRecipe.previousVersion = recipe
+        
+        for pic in recipe.recipepicture_set.all():
+          newPic = RecipePicture.objects.create(recipe=newRecipe,path=pic.path,smallpath=pic.smallpath)
+          if recipe.mainPicture == pic:
+            newRecipe.mainPicture = newPic
+
+        recipe=newRecipe
       else:
         recipe.name = recipeName
         recipe.prepTime = prepTime
@@ -390,7 +400,7 @@ def editRecipe(request,recipeID):
 
       recipe.save()
 
-      return HttpResponseRedirect('/recipes/'+recipeID+'/')
+      return HttpResponseRedirect('/recipes/'+str(recipe.id)+'/')
   else:
     recipe = Recipe.objects.get(id=recipeID)
     initial={'recipe_Name':recipe.name,
