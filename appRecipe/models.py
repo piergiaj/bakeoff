@@ -31,6 +31,7 @@ class Recipe(models.Model):
   cookTime = models.IntegerField(blank=True,null=True)
   chefComment = models.CharField(max_length=500)
   dateCreated = models.DateTimeField(auto_now_add=True)
+  averageRating = models.IntegerField(default=0)
   #Relations
   mainPicture = models.ForeignKey('RecipePicture',blank=True,null=True, related_name = 'mainPictureForRecipe')
   chef = models.ForeignKey(Chef)
@@ -51,9 +52,7 @@ class Recipe(models.Model):
 
   def review(self, chef, comment, rating):
     self.review_set.create(chef=chef,comment=comment,rating=rating)
-
-  def averageRating(self):
-    return int(self.review_set.all().aggregate(Avg('rating'))['rating__avg']+.5)
+    self.averageRating = int(self.review_set.all().aggregate(Avg('rating'))['rating__avg']+.5)
   
 class Instruction(models.Model):
   text = models.CharField(max_length=500)
