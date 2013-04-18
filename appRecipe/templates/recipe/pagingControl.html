@@ -1,0 +1,19 @@
+{% if pages %}
+<div class="pagination pagination-centered" >
+  <ul>
+    {% if pageObject.has_previous %}
+      <li><a href="?page={{pageObject.previous_page_number}}">«</a></li>
+    {% else %}
+      <li class="disabled"><a href="#">«</a></li>
+    {% endif %}
+    {% for page in pageList %}
+      <li {% if pageObject.number == page %}class="active"{% endif %}><a href="?page={{page}}">{{page}}</a></li>
+    {% endfor %}
+    {% if pageObject.has_next %}
+      <li><a href="?page={{pageObject.next_page_number}}">»</a></li>
+    {% else %}
+      <li class="disabled"><a href="#">»</a></li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}

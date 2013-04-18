@@ -31,24 +31,37 @@ def home(request):
 def recipeIndex(request, sortby = 'HighestRated'):
   if sortby == 'Newest':
     recipe_list = Recipe.objects.all().order_by('id').reverse()
+  elif sortby == 'AtoZ':
+    recipe_list = Recipe.objects.all().order_by('name')
   else:
     recipe_list = Recipe.objects.all().order_by('averageRating').reverse()
     sortby = 'HighestRated'
 
-  recipesPerPage = 5
-  paginator = Paginator(recipe_list, recipesPerPage)
+  recipesPerPage = 10
+
+  ret = getItemListAndPageList(recipe_list, recipesPerPage, request)
+  recipes = ret[0]
+  pages = ret[1]
+
+  context = { 'recipe_list': recipes,
+              'pages':pages,
+              'sortby':sortby,}
+  return render(request, 'recipe/recipeIndex.html',context)
+
+def getItemListAndPageList(ls, perPage, request):
+  paginator = Paginator(ls, perPage)
 
   page = request.GET.get('page')
   try:
-    recipes = paginator.page(page)
+    sublist = paginator.page(page)
     page = int(page)
   except PageNotAnInteger:
     # if page is not an integer, deliver first page.
-    recipes = paginator.page(1)
+    sublist = paginator.page(1)
     page = 1
   except EmptyPage:
     # If page is out of range (e.g. 9999), deliver last page of results.
-    recipes = paginator.page(paginator.num_pages)
+    sublist = paginator.page(paginator.num_pages)
     page = paginator.num_pages
 
   pages = None
@@ -59,10 +72,7 @@ def recipeIndex(request, sortby = 'HighestRated'):
     startPage = max(1, finishPage - 4)
     pages = range(startPage,finishPage + 1)
 
-  context = { 'recipe_list': recipes,
-              'pages':pages,
-              'sortby':sortby,}
-  return render(request, 'recipe/recipeIndex.html',context)
+  return (sublist, pages)
   
 def recipeDetail(request, recipe_id):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -77,22 +87,53 @@ def recipeReviews(request, recipe_id):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
   return render(request, 'recipe/recipeReviews.html', {'recipe':recipe})
 
-def chefIndex(request):
-  chef_list = Chef.objects.all()
-  context = { 'chef_list' : chef_list }
+def chefIndex(request, sortby = 'Newest'):
+  if sortby == 'AtoZ':
+    chef_list = Chef.objects.all().order_by('username')
+  else: # sortby == 'Newest'
+    chef_list = Chef.objects.all().order_by('id').reverse()
+    sortby = 'Newest'
+
+  chefsPerPage = 10
+
+  ret = getItemListAndPageList(chef_list, chefsPerPage, request)
+  chefs = ret[0]
+  pages = ret[1]
+
+  context = { 'chef_list' : chefs,
+              'pages' : pages,
+              'sortby': sortby , }
   return render(request, 'recipe/chefIndex.html', context)
 
-def chefDetail(request, chef_id):
+def chefDetail(request, chef_id, showrecipes = 'Originals'):
   chef = get_object_or_404(Chef, pk=chef_id)
-  return render(request, 'recipe/chefDetail.html', {'chef':chef})
+  if showrecipes == 'Favorites':
+    recipe_list = chef.favoriteRecipes.all().order_by('id').reverse()
+  else: # Originals
+    recipe_list = chef.recipe_set.all().filter(previousVersion__exact=None)
+    showrecipes = 'Originals'
 
+  recipesPerPage = 5
+
+  ret = getItemListAndPageList(recipe_list, recipesPerPage, request)
+  recipes = ret[0]
+  pages = ret[1]
+
+  context = { 'chef':chef,
+              'recipe_list': recipes,
+              'pages':pages,
+              'showrecipes':showrecipes,}
+
+  return render(request, 'recipe/chefDetail.html', context)
+
+''' links used now
 def getPic(request, pic_name):
   api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
   pic = api.get('/path/data/images/',pic_name)
   #img = zlib.decompress(pic.data, 16+zlib.MAX_WBITS)
   img = pic.data
   response = HttpResponse(img, content_type='image')
-  return response
+  return response'''
 
 def addChef(request):
   if request.method == 'POST':
@@ -112,6 +153,18 @@ def addChef(request):
   else:
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
+
+@login_required(login_url='/login/')
+def addToFavorites(request, recipe_id):
+  chef = Chef.objects.get(id=request.user.id)
+  chef.favoriteRecipes.add(recipe_id)
+  return HttpResponseRedirect('/recipes/'+str(recipe_id))
+
+@login_required(login_url='/login/')
+def removeFromFavorites(request, recipe_id):
+  chef = Chef.objects.get(id=request.user.id)
+  chef.favoriteRecipes.remove(recipe_id)
+  return HttpResponseRedirect('/recipes/'+str(recipe_id))
 
 ''' need to change this to a simpler form
 def editChef(request):
@@ -255,6 +308,7 @@ def addRecipe(request):
 def test(request):
   return render(request, 'recipe/test.html', {})
 
+''' pdf's suck
 def pdf(request):
   scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
@@ -265,5 +319,5 @@ def pdf(request):
   api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
   api.post('/path/data', file=('pdf.pdf', open(pdfPath, 'r').read()))
 
-  return HttpResponseRedirect('/')
+  return HttpResponseRedirect('/')'''
 

@@ -1,13 +1,39 @@
 {% extends "recipe/base.html" %}
+{% load humanize %}
 
 {% block title %}{{ chef.username }}{% endblock title %}
 
 {% block content %}
-  <h1>{{ chef.username }}</h1>
-  <h2>Recipes</h2>
-  <ul>
-  {% for recipe in chef.recipe_set.all %}
-    <li><a href="{% url 'recipeDetail' recipe.id %}">{{ recipe.name }}</a></li>
-  {% endfor %}
-  </ul>
+<div class="row-fluid">
+  <div class="span4">
+    <img style="width:64px;height:64px;" src="{{ chef.chefpicture.path }}" >
+  </div>
+  <div class="span8">
+    <div class="row-fluid">
+      <div class="span12">
+        <h1>{{ chef.username }}</h1>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12">
+        <p>Chef since {{ chef.date_joined|naturaltime }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row-fluid">
+<h2>Recipes</h2>
+<ul class="nav nav-pills">
+  <li {% if showrecipes == "Originals" %}class="active"{%endif%}>
+    <a href="{% url 'chefDetailShowRecipes' chef.id 'Originals' %}">Originals</a>
+  </li>
+  <li {% if showrecipes == "Favorites" %}class="active"{%endif%}>
+    <a href="{% url 'chefDetailShowRecipes' chef.id 'Favorites' %}">Favorites</a>
+  </li>
+</ul>
+{% for recipe in recipe_list %}
+  {% include "recipe/recipeMediaObject.html" with recipe=recipe starName=forloop.counter0 only %}
+{% endfor %}
+{% include "recipe/pagingControl.html" with pageObject=recipe_list pageList=pages %}
+</div>
 {% endblock content %}

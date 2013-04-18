@@ -5,6 +5,14 @@
 {% block ChefIndexActive %}active{% endblock %}
 
 {% block content %}
+<ul class="nav nav-pills">
+  <li {% if sortby == "Newest" %}class="active"{%endif%}>
+    <a href="{% url 'chefIndexSorted' 'Newest' %}">Newest</a>
+  </li>
+  <li {% if sortby == "AtoZ" %}class="active"{%endif%}>
+    <a href="{% url 'chefIndexSorted' 'AtoZ' %}">A to Z</a>
+  </li>
+</ul>
   {% if chef_list %}
     {% for chef in chef_list %}
       {% include "recipe/chefSmallMediaObject.html" with chef=chef only %}
@@ -12,4 +20,6 @@
   {% else %}
     <p>No chefs are available.</p>
   {% endif %}
+
+{% include "recipe/pagingControl.html" with pageObject=chef_list pageList=pages %}
 {% endblock content %}

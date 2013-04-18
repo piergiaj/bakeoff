@@ -8,9 +8,8 @@ from appRecipe import util
 
 # Create your models here.
 class Chef(User):
-  #can't have empty class so this is here...
-  def placeholder(self):
-    return ''
+  #Relations
+  favoriteRecipes = models.ManyToManyField('Recipe',related_name='chefsWithFavorite')
 
 class Ingredient(models.Model):
   name = models.CharField(max_length = 200)
