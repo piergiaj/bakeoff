@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
-from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient, Chef_favoriteRecipes
+from appRecipe.models import Recipe, Chef, ChefPicture, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient, Chef_favoriteRecipes
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -138,6 +138,7 @@ def getPic(request, pic_name):
 
 def addChef(request):
   if request.method == 'POST':
+    print request.FILES
     form = forms.AddChef(request.POST, request.FILES)
     if form.is_valid():
       username = form.cleaned_data['username']
@@ -153,10 +154,10 @@ def addChef(request):
       api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
 
       #make folder for pictures
-      pictureFolder = '/ChefPicture/'+newChef.id+'/'
+      pictureFolder = '/ChefPicture/'+str(newChef.id)+'/'
       api.post('/path/oper/mkdir',path=pictureFolder)
 
-      p = request.FILES['picture']
+      p = request.FILES['chef_picture']
       picName = p.name.split(".")
       tempPictureName = "tmp."+picName[-1]
       with open(tempPictureName, 'wb+') as destination:
@@ -176,9 +177,9 @@ def addChef(request):
       api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
       api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
 
-      rpic = recipe.chefpicture_set.create()
-      t = Thread(target=createLink, args=(rpic,fileName,picName))
-      t.start()
+      rpic = ChefPicture.objects.create(chef=newChef)
+      rpic.setPath(fileName, pictureFolder)
+      rpic.setSmallPath(picName[0]+'_thumb.jpg', pictureFolder)
 
 
       # assuming authenticate works
@@ -252,9 +253,9 @@ def login(request):
     form = forms.Login()
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
-def createLink(rpic,fileName,picName):
-  rpic.setPath(fileName)
-  rpic.setSmallPath(picName[0]+'_thumb.jpg')
+def createLink(rpic,fileName,picName,ids):
+  rpic.setPath(fileName,ids)
+  rpic.setSmallPath(picName[0]+'_thumb.jpg',ids)
 
 def validateForm(request, ings, extra):
   for i in range(int(extra)):
@@ -337,7 +338,7 @@ def addRecipe(request):
 
         #make picture object
         rpic = recipe.recipepicture_set.create()
-        t = Thread(target=createLink, args=(rpic,fileName,picName))
+        t = Thread(target=createLink, args=(rpic,fileName,picName,pictureFolder))
         t.start()
 
         #set this pic as recipe's main pic
