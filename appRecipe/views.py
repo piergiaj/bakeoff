@@ -164,7 +164,8 @@ def login(request):
 def createPDF(api,ids, pictureFolder, recipeName):
   scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
-  args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/']
+  page = 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/'
+  args = [scriptPath, "--footer-center", '[page]', page]
   args.append(pdfPath)
   os.system(" ".join(args))
   fd = open(pdfPath, 'r').read()
@@ -188,8 +189,9 @@ def addRecipe(request):
 
       #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
 
-      recipe = Recipe.objects.create(chef=get_object_or_404(Chef, pk=request.user.id), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)#TODO: add chef, picture, ingredients, etc
-      
+      recipe = Recipe.objects.create(chef=get_object_or_404(Chef, pk=request.user.id), name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)
+      ids = str(recipe.id)
+
       recipe.instruction_set.create(text=instructions)
       for i in range(form.cleaned_data['inst']):
         inst = request.POST.get('extra_field_'+str(i+1))
@@ -212,8 +214,7 @@ def addRecipe(request):
       api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
 
       #make folder for pictures
-      ids = str(recipe.id)
-      pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'
+      pictureFolder = '/RecipePicture/'+ids+'/'
       api.post('/path/oper/mkdir',path=pictureFolder)
 
       for p in request.FILES.getlist('picture'):
