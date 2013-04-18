@@ -37,11 +37,16 @@ def recipeIndex(request):
   except PageNotAnInteger:
     # if page is not an integer, deliver first page.
     recipes = paginator.page(1)
+    page = 1
   except EmptyPage:
     # If page is out of range (e.g. 9999), deliver last page of results.
     recipes = paginator.page(paginator.num_pages)
+    page = paginator.num_pages
 
-  context = { 'recipe_list': recipes,}
+  startPage = max(1,page-2)
+  finishPage = min(startPage+6)
+  context = { 'recipe_list': recipes,
+              'pages':pages,}
   return render(request, 'recipe/recipeIndex.html',context)
   
 def recipeDetail(request, recipe_id):
