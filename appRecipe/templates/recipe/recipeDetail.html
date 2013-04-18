@@ -61,7 +61,7 @@
         {% if recipe.chef.id == user.id %}
         <a class="btn" title="Edit Recipe" href="{% url 'editRecipe' recipe.id %}"><i class="icon-edit"></i></a>
         {% else %}
-        <a class="btn" title="Edit and Save to your Recipes"><i class="icon-edit"></i></a>
+        <a class="btn" title="Edit and Clone to your Recipes" href="{% url 'editRecipe' recipe.id %}"><i class="icon-edit"></i></a>
         {% endif %}
         {% endif %}
         {% if recipe in request.user.chef.favoriteRecipes.all %}
