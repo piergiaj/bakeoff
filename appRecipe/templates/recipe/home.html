@@ -7,26 +7,16 @@
 
   {# carousel code #}
   <div id="myCarousel" class="carousel slide">
-    <ol class="carousel-indicators">
-      {% for recipe_picture in recipe_picture_list %}
-        <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} ></li>
-      {% endfor %}
-    </ol>
     <div class="carousel-inner">
-      {% for recipe_picture in recipe_picture_list %}
-      
         <div class="{% if forloop.first %}active {% endif %}item">
-          <a href="{% url 'recipeDetail' recipe_picture.recipe.id %}">
-          <img src="{{ recipe_picture.path }}" alt="pic" />
+          <a href="{% url 'recipeDetail' recipeOfTheDay.id %}">
+          <img src="{{ recipeOfTheDay.mainPicture.path }}" alt="pic" />
           <div class="carousel-caption">
-            <h4>{{ recipe_picture.recipe.name }}</h4>
-            <p>"{{ recipe_picture.recipe.chefComment }}" - {{ recipe_picture.recipe.chef.username }}</p>
+            <h4>{{ recipeOfTheDay.name }}</h4>
+            <p>"{{ recipeOfTheDay.chefComment }}" - {{ recipeOfTheDay.chef.username }}</p>
           </div>
         </a>
         </div>
-      {% endfor %}
     </div>
-    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
   </div>
 {% endblock content %}

@@ -20,12 +20,8 @@ import sys
 #import zlib
 
 def home(request):
-  recipe_list = Recipe.objects.all()
-  chef_list = Chef.objects.all()
-  recipe_picture_list = RecipePicture.objects.all()
-  context = { 'chef_list' : chef_list,
-              'recipe_list': recipe_list,
-              'recipe_picture_list' : recipe_picture_list, }
+  recipeOfTheDay = Recipe.objects.get(id=1)
+  context = { 'recipeOfTheDay' : recipeOfTheDay, }
   return render(request, 'recipe/home.html', context)
 
 def recipeIndex(request, sortby = 'HighestRated'):
@@ -238,8 +234,10 @@ def validateForm(request, ings, extra):
     ingName = request.POST.get('extra_ings_'+str(i))
     amount = request.POST.get('amount_extra_ings_'+str(i))
     unitName = request.POST.get('unit_extra_ings_'+str(i))
-    if ingName is None or not isinstance(amount, int):
+    if ingName is None or amount is None:
       return False
+
+    return amount.replace('.','',1).isdigit()
 
 
 @login_required(login_url='/login/')
