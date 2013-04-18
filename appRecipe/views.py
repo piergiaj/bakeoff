@@ -30,11 +30,7 @@ def home(request):
   return render(request, 'recipe/home.html', context)
 
 def recipeIndex(request):
-  #recipe_list = Recipe.objects.all()
-  recipe_list = []
-  for i in range(10):
-    for j in range(1,3):
-      recipe_list.append(Recipe.objects.get(id=j))
+  recipe_list = Recipe.objects.all()
 
   recipesPerPage = 5
   paginator = Paginator(recipe_list, recipesPerPage)
@@ -167,7 +163,7 @@ def createPDF(api,ids, pictureFolder, recipeName):
   print ids
   scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
-  page = 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/'
+  page = "http://infinite-garden-1600.herokuapp.com/recipes/1/"
   args = [scriptPath, page, pdfPath]
   subprocess.call(args)
   #args.append(pdfPath)
