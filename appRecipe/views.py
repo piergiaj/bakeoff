@@ -212,6 +212,16 @@ def addRecipe(request):
         recipe.mainPicture = rpic
       recipe.save()
 
+
+      scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
+      pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
+      args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/recipe/'+str(recipe.id)+'/']
+      args.append(pdfPath)
+      os.system(" ".join(args))
+      fd = open(pdfPath, 'r').read()
+      api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))
+
+
       return HttpResponseRedirect('/recipes')
   else:
     form = forms.AddRecipe()
@@ -240,3 +250,4 @@ def pdf(request):
   api.post('/path/data', file=('pdf.pdf', open(pdfPath, 'r').read()))
 
   return HttpResponseRedirect('/')
+
