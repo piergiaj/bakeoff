@@ -30,7 +30,7 @@ def home(request):
 
 def recipeIndex(request, sortby = 'HighestRated'):
   if sortby == 'Newest':
-    recipe_list = Recipe.objects.all().reverse()
+    recipe_list = Recipe.objects.all()
   else:
     recipe_list = Recipe.objects.all().order_by('averageRating').reverse()
     sortby = 'HighestRated'
@@ -210,16 +210,15 @@ def addRecipe(request):
       api.post('/path/oper/mkdir',path=pictureFolder)
 
       for p in request.FILES.getlist('picture'):
-        picData = p.read()
         picName = p.name.split(".")
-        
         tempPictureName = "tmp."+picName[-1]
-        f = open(tempPictureName, 'w')
-        f.write(picData)
-        f.close()
+        with open(tempPictureName, 'wb+') as destination:
+          for chunk in p.chunks():
+            destination.write(chunk)
 
+        destination.close()
         #im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
-        im = Image.open(tempPictureName) 
+        im = Image.open(tempPictureName)
         size = 64, 64
         im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
         im.thumbnail(size, Image.ANTIALIAS)
