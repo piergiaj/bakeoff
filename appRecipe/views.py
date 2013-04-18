@@ -162,9 +162,11 @@ def login(request):
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
 def createPDF(api,ids, pictureFolder, recipeName):
+  print ids
   scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
   page = 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/'
+  print page
   args = [scriptPath, "--footer-center", '[page]', page]
   args.append(pdfPath)
   os.system(" ".join(args))
