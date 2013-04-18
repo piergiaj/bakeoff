@@ -58,6 +58,13 @@ recBee = chefAJ.recipe_set.create(name='Beef',chefComment='Awesome roast beef',p
 recCin = chefErik.recipe_set.create(name='Clone of a Cinnabon',chefComment='You have got to try these. The first time I made them, I thought of how much money I could save by making my own!',prepTime=20,cookTime=15)
 recPas = chefErik.recipe_set.create(name='Pasta',chefComment='Bibidy Boppody Boo',prepTime=10,cookTime=20)
 recLas = chefErik.recipe_set.create(name='Lasagna',chefComment='Bibidy Boppody, Boppody Boo',prepTime=10,cookTime=20)
+recRoot = chefErik.recipe_set.create(name='TestRoot',chefComment='Bibidy Boppody, Boppody Boo',prepTime=10,cookTime=20)
+recC1 = chefErik.recipe_set.create(name='TestChildOne',chefComment='Bibidy Boppody, Boppody Boo',prepTime=10,cookTime=20)
+recC2 = chefErik.recipe_set.create(name='TestChildTwo',chefComment='Bibidy Boppody, Boppody Boo',prepTime=10,cookTime=20)
+recC2.previousVersion = recC1
+recC2.save()
+recC1.previousVersion = recRoot
+recC1.save()
 
 #Instructions
 recPiz.instruction_set.create(text='Put the dough down.')

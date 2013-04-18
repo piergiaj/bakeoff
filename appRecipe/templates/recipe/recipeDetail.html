@@ -3,18 +3,26 @@
 {% block title %}{{ recipe.name}}{% endblock title %}
 
 {% block content %}
+{% if recipe.previousVersion %}
+<div class="row-fluid">
+  <ul class="breadcrumb">
+    {% with template_name="recipe/recipeBreadCrumbRecur.html" %}{% include template_name with recipe=recipe.previousVersion only %}{% endwith %}
+    <li class="active">{{recipe.name}}</li>
+  </ul>
+</div>
+{% endif %}
   <div class="row-fluid">
     <div class="span4">
       {% if recipe.recipepicture_set.count > 1 %}
         <div id="myCarousel" class="carousel slide">
           <div class="carousel-inner">
             <div class="active item">
-              <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture" class="img-rounded">
+              <img src="{{ recipe.mainPicture.path }}" alt="Main Recipe Picture" class="img-round">
             </div>
             {% for picture in recipe.recipepicture_set.all %}
               {% if picture != recipe.mainPicture %}
                 <div class="item">
-                  <img src="{{ picture.path }}" alt="Recipe Picture" class="img-rounded"/>
+                  <img src="{{ picture.path }}" alt="Recipe Picture" class="img-round"/>
                 </div>
               {% endif %}
             {% endfor %}
@@ -67,11 +75,15 @@
   <div class="row-fluid">
     <div class="span4">
       <h2>Ingredients</h2>
+      {% if recipe.recipeingredient_set.all %}
       <ul>
       {% for ri in recipe.recipeingredient_set.all %}
         <li>{{ ri.amount }} {{ ri.unit.name }}{{ ri.amount|pluralize }} of {{ ri.ingredient.name }}</li>
       {% endfor %}
       </ul>
+      {% else %}
+      <p>No ingredients</p>
+      {% endif %}
     </div>
     <div class="span8">
       <h2>Instructions</h2>
