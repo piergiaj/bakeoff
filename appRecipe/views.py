@@ -56,6 +56,7 @@ def recipeIndex(request):
   if (paginator.num_pages > 1):
     startPage = max(1,page-2)
     finishPage = min(startPage+4,paginator.num_pages)
+    startPage = max(1, finishPage - 4)
     pages = range(startPage,finishPage + 1)
 
   context = { 'recipe_list': recipes,
@@ -167,7 +168,7 @@ def createPDF(api,ids, pictureFolder, recipeName):
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
   page = 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/'
   print page
-  args = [scriptPath, "--footer-center", '[page]', page]
+  args = [scriptPath, page]
   args.append(pdfPath)
   print " ".join(args)
   os.system(" ".join(args))
