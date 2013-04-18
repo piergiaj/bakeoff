@@ -9,7 +9,12 @@ from appRecipe import util
 # Create your models here.
 class Chef(User):
   #Relations
-  favoriteRecipes = models.ManyToManyField('Recipe',related_name='chefsWithFavorite')
+  favoriteRecipes = models.ManyToManyField('Recipe',related_name='chefsWithFavorite', through='Chef_favoriteRecipes')
+
+class Chef_favoriteRecipes(models.Model):
+  #Relations
+  chef = models.ForeignKey(Chef)
+  recipe = models.ForeignKey('Recipe')
 
 class Ingredient(models.Model):
   name = models.CharField(max_length = 200)

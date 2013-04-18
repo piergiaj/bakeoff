@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context, loader
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
-from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient
+from appRecipe.models import Recipe, Chef, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient, Chef_favoriteRecipes
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -108,7 +108,10 @@ def chefIndex(request, sortby = 'Newest'):
 def chefDetail(request, chef_id, showrecipes = 'Originals'):
   chef = get_object_or_404(Chef, pk=chef_id)
   if showrecipes == 'Favorites':
-    recipe_list = chef.favoriteRecipes.all().order_by('id').reverse()
+    recipe_list = []
+    fav_list = Chef_favoriteRecipes.objects.filter(chef_id=chef_id).order_by('id').reverse()
+    for fav in fav_list:
+      recipe_list.append(fav.recipe)
   else: # Originals
     recipe_list = chef.recipe_set.all().filter(previousVersion__exact=None)
     showrecipes = 'Originals'
@@ -156,15 +159,17 @@ def addChef(request):
 
 @login_required(login_url='/login/')
 def addToFavorites(request, recipe_id):
-  chef = Chef.objects.get(id=request.user.id)
-  chef.favoriteRecipes.add(recipe_id)
+  #does this check in case they tried to add to favorites when logged out
+  if Recipe.objects.get(id=recipe_id) not in Chef.objects.get(id=request.user.id).recipe_set.all():
+    Chef_favoriteRecipes.objects.create(chef_id=request.user.id,recipe_id=recipe_id)
   return HttpResponseRedirect('/recipes/'+str(recipe_id))
 
 @login_required(login_url='/login/')
 def removeFromFavorites(request, recipe_id):
-  chef = Chef.objects.get(id=request.user.id)
-  chef.favoriteRecipes.remove(recipe_id)
-  return HttpResponseRedirect('/recipes/'+str(recipe_id))
+  fav = Chef_favoriteRecipes.objects.get(chef_id=request.user.id,recipe_id=recipe_id)
+  fav.delete()
+  nextPage = request.GET.get('next')
+  return HttpResponseRedirect(nextPage)
 
 ''' need to change this to a simpler form
 def editChef(request):

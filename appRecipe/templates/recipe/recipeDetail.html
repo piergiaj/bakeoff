@@ -57,7 +57,7 @@
         {% endif %}
         {% endif %}
         {% if recipe in request.user.chef.favoriteRecipes.all %}
-        <a class="btn" title="Remove from your Favorites" href="{% url 'removeFromFavorites' recipe.id %}"><i class="icon-star"></i></a>
+        <a class="btn" title="Remove from your Favorites" href="{% url 'removeFromFavorites' recipe.id %}?next={% url 'recipeDetail' recipe.id %}"><i class="icon-star"></i></a>
         {% elif recipe.chef.id != user.id %}
         <a class="btn" title="Add to your Favorites" href="{% url 'addToFavorites' recipe.id %}"><i class="icon-star-empty"></i></a>
         {% endif %}

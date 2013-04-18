@@ -41,6 +41,8 @@ for unit in units:
 #Recipes
 recPiz = chefErik.recipe_set.create(name='Pizza',chefComment='Bibidy Boppody',prepTime=10,cookTime=20)
 recBee = chefAJ.recipe_set.create(name='Beef',chefComment='Awesome roast beef',prepTime=40,cookTime=90)
+recPas = chefErik.recipe_set.create(name='Pasta',chefComment='Bibidy Boppody Boo',prepTime=10,cookTime=20)
+recLas = chefErik.recipe_set.create(name='Lasagna',chefComment='Bibidy Boppody, Boppody Boo',prepTime=10,cookTime=20)
 
 #Instructions
 recPiz.instruction_set.create(text='Put the dough down.')

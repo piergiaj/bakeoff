@@ -32,7 +32,16 @@
   </li>
 </ul>
 {% for recipe in recipe_list %}
+  {% if request.user.id == chef.id and showrecipes == "Favorites" %}
+  <div class="row-fluid">
+    <div class="span1"><a class="btn" title="Remove from your Favorites" href="{% url 'removeFromFavorites' recipe.id %}?next={% url 'chefDetailShowRecipes' chef.id 'Favorites' %}"><i class="icon-trash"></i></a></div>
+    <div class="span11">
+    {% include "recipe/recipeMediaObject.html" with recipe=recipe starName=forloop.counter0 only %}
+    </div>
+  </div>
+  {% else %}
   {% include "recipe/recipeMediaObject.html" with recipe=recipe starName=forloop.counter0 only %}
+  {%endif%}
 {% endfor %}
 {% include "recipe/pagingControl.html" with pageObject=recipe_list pageList=pages %}
 </div>
