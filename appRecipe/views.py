@@ -16,8 +16,10 @@ from threading import Thread
 
 import Image
 import os
+import urllib2
 import sys
 import subprocess
+import xhtml2pdf
 #import zlib
 
 def home(request):
@@ -158,14 +160,21 @@ def login(request):
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
 def createPDF(api,ids, pictureFolder, recipeName):
-  scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
+  #scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
   pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
   page = 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/'
-  args = [scriptPath, page, pdfPath]
-  subprocess.call(args)
+  #args = [scriptPath, page, pdfPath]
+  #subprocess.call(args)
   #args.append(pdfPath)
   #print " ".join(args)
   #os.system(" ".join(args))
+
+  response = urllib2.urlopen(page)
+  page_source = response.read()
+
+
+  pdf = xhtml2pdf.pisa.CreatePDF(page_source, file(pdfPath, "wb"))
+
   fd = open(pdfPath, 'r').read()
   api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))
 
