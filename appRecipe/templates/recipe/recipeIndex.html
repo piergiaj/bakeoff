@@ -5,6 +5,11 @@
 {% block RecipeIndexActive %}active{% endblock %}
 
 {% block content %}
+<ul class="nav nav-pills">
+  <li class="active">
+    <a href="#">Most Popular</a>
+  </li>
+</ul>
   {% for recipe in recipe_list %}
     {% include "recipe/recipeMediaObject.html" with recipe=recipe starName=forloop.counter0 only %}
   {% empty %}

@@ -29,7 +29,7 @@ def home(request):
               'recipe_picture_list' : recipe_picture_list, }
   return render(request, 'recipe/home.html', context)
 
-def recipeIndex(request):
+def recipeIndex(request, sortby = None):
   recipe_list = Recipe.objects.all()
 
   recipesPerPage = 5
