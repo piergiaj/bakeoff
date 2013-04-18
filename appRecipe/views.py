@@ -257,9 +257,9 @@ def createLink(rpic,fileName,picName,ids):
   rpic.setPath(fileName,ids)
   rpic.setSmallPath(picName[0]+'_thumb.jpg',ids)
 
-def validateForm(request, ings, extra):
+def validateForm(request, ings, extra,n=1):
   for i in range(int(extra)):
-    inst = request.POST.get('extra_field_'+str(i+1))
+    inst = request.POST.get('extra_fields_'+str(i+n))
     if inst is None:
       return False
 
@@ -378,7 +378,7 @@ def pdf(request):
 def editRecipe(request,recipeID):
   if request.method == 'POST':
     form = forms.AddRecipe(request.POST, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=request.POST.get('pics'))
-    if form.is_valid() and validateForm(request, request.POST.get('ings'), request.POST.get('inst')):
+    if form.is_valid() and validateForm(request, request.POST.get('ings'), request.POST.get('inst'),0):
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
       cookTime = form.cleaned_data['cook_Time']
