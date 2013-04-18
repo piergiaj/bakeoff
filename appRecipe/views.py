@@ -338,17 +338,21 @@ def editRecipe(request,recipeID):
       instructions = form.cleaned_data['instructions']
 
       #api.post('/path/data/images/', file=(recipeName+'.'+picName[-1], picData))
+
       recipe = Recipe.objects.get(id=recipeID)
-      recipe.name = recipeName
-      recipe.prepTime = prepTime
-      recipe.cookTime = cookTime
-      recipe.chefComment = comments
+      if request.user.id != recipe.chef_id:
+        recipe = Recipe.objects.create(chef_id=request.user.id, name=recipeName, prepTime=prepTime, cookTime=cookTime, chefComment=comments)
+      else:
+        recipe.name = recipeName
+        recipe.prepTime = prepTime
+        recipe.cookTime = cookTime
+        recipe.chefComment = comments
 
-      for i in recipe.instruction_set.all():
-        i.delete()
+        for i in recipe.instruction_set.all():
+          i.delete()
 
-      for i in RecipeIngredient.objects.filter(recipe_id=recipeID):
-        i.delete()
+        for i in RecipeIngredient.objects.filter(recipe_id=recipeID):
+          i.delete()
 
       recipe.instruction_set.create(text=instructions)
       for i in range(form.cleaned_data['inst']):
