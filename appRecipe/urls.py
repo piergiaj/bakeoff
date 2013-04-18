@@ -26,5 +26,6 @@ urlpatterns = patterns('',
   url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),
 
   url(r'^test/$', views.test),
+  url(r'^pdf/$', views.pdf),
   url(r'^staticfiles/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
 )

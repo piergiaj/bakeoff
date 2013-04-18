@@ -1,0 +1,54 @@
+//
+// Wells
+// --------------------------------------------------
+
+
+// Base class
+.well {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: @wellBackground;
+  border: 1px solid darken(@wellBackground, 7%);
+  .border-radius(@baseBorderRadius);
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+  blockquote {
+    border-color: #ddd;
+    border-color: rgba(0,0,0,.15);
+  }
+}
+
+// Sizes
+.well-large {
+  padding: 24px;
+  .border-radius(@borderRadiusLarge);
+}
+.well-small {
+  padding: 9px;
+  .border-radius(@borderRadiusSmall);
+}
+
+// Base class
+.redwell {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: @redwellBackground;
+  border: 1px solid darken(@redwellBackground, 7%);
+  .border-radius(@baseBorderRadius);
+  .box-shadow(inset 0 0 10px 5px #100000);
+  blockquote {
+    border-color: #ddd;
+    border-color: rgba(0,0,0,.15);
+  }
+}
+
+// Sizes
+.redwell-large {
+  padding: 24px;
+  .border-radius(@borderRadiusLarge);
+}
+.redwell-small {
+  padding: 9px;
+  .border-radius(@borderRadiusSmall);
+}
