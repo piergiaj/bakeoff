@@ -16,6 +16,7 @@ urlpatterns = patterns('',
   url(r'^recipes/(?P<recipe_id>\d+)/favorite/$', views.addToFavorites, name='addToFavorites'),
   url(r'^recipes/(?P<recipe_id>\d+)/unfavorite/$', views.removeFromFavorites, name='removeFromFavorites'),
   url(r'^recipes/add/$', views.addRecipe, name='addRecipe'),
+  url(r'^recipes/edit/(?P<recipeID>\d+)/$', views.editRecipe, name='editRecipe'),
 
   url(r'^chefs/$', views.chefIndex, name='chefIndex'),
   url(r'^chefs/sortby/(?P<sortby>.*)$', views.chefIndex, name='chefIndexSorted'),
