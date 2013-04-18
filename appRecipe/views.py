@@ -181,6 +181,7 @@ def addRecipe(request):
       api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
 
       #make folder for pictures
+      ids = str(recipe.id)
       pictureFolder = '/RecipePicture/'+str(recipe.id)+'/'
       api.post('/path/oper/mkdir',path=pictureFolder)
 
@@ -215,7 +216,7 @@ def addRecipe(request):
 
       scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
       pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
-      args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/recipe/'+str(recipe.id)+'/']
+      args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/']
       args.append(pdfPath)
       os.system(" ".join(args))
       fd = open(pdfPath, 'r').read()
