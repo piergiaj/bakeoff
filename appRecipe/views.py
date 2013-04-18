@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from appRecipe import forms
 
@@ -27,6 +28,19 @@ def home(request):
 
 def recipeIndex(request):
   recipe_list = Recipe.objects.all()
+  recipesPerPage = 10
+  paginator = Paginator(recipe_list, recipesPerPage)
+
+  page = request.GET.get('page')
+  try:
+    recipes = paginator.page(page)
+  except: PageNotAnInteger:
+    # if page is not an integer, deliver first page.
+    recipes = paginator.page(1)
+  except: EmptyPage:
+    # If page is out of range (e.g. 9999), deliver last page of results.
+    recipes = paginator.page(paginator.num_pages)
+
   context = { 'recipe_list': recipe_list,}
   return render(request, 'recipe/recipeIndex.html',context)
   
