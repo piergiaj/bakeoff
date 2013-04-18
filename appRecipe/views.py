@@ -169,6 +169,7 @@ def createPDF(api,ids, pictureFolder, recipeName):
   print page
   args = [scriptPath, "--footer-center", '[page]', page]
   args.append(pdfPath)
+  print " ".join(args)
   os.system(" ".join(args))
   fd = open(pdfPath, 'r').read()
   api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))

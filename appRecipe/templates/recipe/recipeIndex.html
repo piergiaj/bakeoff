@@ -17,7 +17,7 @@
       <li><a href="?page={{recipe_list.previous_page_number}}">«</a></li>
     {% endif %}
     {% for page in pages %}
-      <li><a href="?page={{page}}">{{page}}</a></li>
+      <li {% if recipe_list.number == page %}class="active"{% endif %}><a href="?page={{page}}">{{page}}</a></li>
     {% endfor %}
     {% if recipe_list.has_next %}
       <li><a href="?page={{recipe_list.next_page_number}}">»</a></li>
