@@ -28,8 +28,11 @@ def home(request):
               'recipe_picture_list' : recipe_picture_list, }
   return render(request, 'recipe/home.html', context)
 
-def recipeIndex(request):
-  recipe_list = Recipe.objects.all()
+def recipeIndex(request, sortby = 'HighestRated'):
+  if sortby == 'Newest':
+    recipe_list = Recipe.objects.all().reverse()
+  else:
+    recipe_list = Recipe.objects.all().order_by('averageRating')
 
   recipesPerPage = 5
   paginator = Paginator(recipe_list, recipesPerPage)
@@ -207,12 +210,13 @@ def addRecipe(request):
       for p in request.FILES.getlist('picture'):
         picData = p.read()
         picName = p.name.split(".")
-  
-        f = open("tmp."+picName[-1], 'w')
+        
+        tempPictureName = "tmp."+picName[-1]
+        f = open(tempPictureName, 'w')
         f.write(picData)
         f.close()
 
-        im = Image.open("tmp."+picName[-1]) 
+        im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
         size = 64, 64
         im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
         im.thumbnail(size, Image.ANTIALIAS)
