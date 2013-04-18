@@ -154,6 +154,10 @@ def createPDF(api,ids, pictureFolder, recipeName):
   fd = open(pdfPath, 'r').read()
   api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))
 
+def createLink(rpic,fileName,picName):
+  rpic.setPath(fileName)
+  rpic.setSmallPath(picName[0]+'_thumb.jpg')
+
 @login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
@@ -217,8 +221,8 @@ def addRecipe(request):
 
         #make picture object
         rpic = recipe.recipepicture_set.create()
-        rpic.setPath(fileName)
-        rpic.setSmallPath(picName[0]+'_thumb.jpg')
+        t = Thread(target=createLink, args=(rpic,fileName,picName))
+        t.start()
 
         #set this pic as recipe's main pic
         recipe.mainPicture = rpic
