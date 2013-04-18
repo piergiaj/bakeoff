@@ -3,12 +3,12 @@
 {% block title %}Recipe Site{% endblock title %}
 
 {% block content %}
-  <h1>Welcome to the Home Page!</h1>
+  <h1>Recipe of the Week!</h1>
 
   {# carousel code #}
   <div id="myCarousel" class="carousel slide">
     <div class="carousel-inner">
-        <div class="{% if forloop.first %}active {% endif %}item">
+        <div class="active item">
           <a href="{% url 'recipeDetail' recipeOfTheDay.id %}">
           <img src="{{ recipeOfTheDay.mainPicture.path }}" alt="pic" />
           <div class="carousel-caption">
@@ -19,4 +19,15 @@
         </div>
     </div>
   </div>
+<div class="row-fluid">
+  <div class="span4">
+    {% include 'recipe/recipeThumbnail.html' with recipe=featuredRecipe1 only %}
+  </div>
+  <div class="span4">
+    {% include 'recipe/recipeThumbnail.html' with recipe=featuredRecipe2 only %}
+  </div>
+  <div class="span4">
+    {% include 'recipe/recipeThumbnail.html' with recipe=featuredRecipe3 only %}
+  </div>
+</div>
 {% endblock content %}

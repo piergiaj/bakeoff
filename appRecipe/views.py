@@ -20,8 +20,14 @@ import sys
 #import zlib
 
 def home(request):
-  recipeOfTheDay = Recipe.objects.get(id=1)
-  context = { 'recipeOfTheDay' : recipeOfTheDay, }
+  recipeOfTheDay = Recipe.objects.get(id=4)
+  featuredRecipe1 = Recipe.objects.get(id=1)
+  featuredRecipe2 = Recipe.objects.get(id=2)
+  featuredRecipe3 = Recipe.objects.get(id=3)
+  context = { 'recipeOfTheDay' : recipeOfTheDay, 
+              'featuredRecipe1' : featuredRecipe1,
+              'featuredRecipe2' : featuredRecipe2,
+              'featuredRecipe3' : featuredRecipe3,}
   return render(request, 'recipe/home.html', context)
 
 def recipeIndex(request, sortby = 'HighestRated'):

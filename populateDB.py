@@ -58,6 +58,7 @@ for unit in units:
 recPiz = chefErik.recipe_set.create(name='Pizza',chefComment='Bibidy Boppody',prepTime=10,cookTime=20)
 recBee = chefAJ.recipe_set.create(name='Beef',chefComment='Awesome roast beef',prepTime=40,cookTime=90)
 recCin = chefErik.recipe_set.create(name='Clone of a Cinnabon',chefComment='You have got to try these. The first time I made them, I thought of how much money I could save by making my own!',prepTime=20,cookTime=15)
+recCup = chefErik.recipe_set.create(name='Easy Chocolate Cupcakes',chefComment='These chocolate cupcakes are easy to make and very tasty.',prepTime=10,cookTime=20)
 
 #Instructions
 recPiz.instruction_set.create(text='Put the dough down.')
@@ -70,6 +71,10 @@ recCin.instruction_set.create(text='Place ingredients in the pan of the bread ma
 recCin.instruction_set.create(text='After the dough has doubled in size turn it out onto a lightly floured surface, cover and let rest for 10 minutes. In a small bowl, combine brown sugar and cinnamon.')
 recCin.instruction_set.create(text='Roll dough into a 16x21 inch rectangle. Spread dough with 1/3 cup butter and sprinkle evenly with sugar/cinnamon mixture. Roll up dough and cut into 12 rolls. Place rolls in a lightly greased 9x13 inch baking pan. Cover and let rise until nearly doubled, about 30 minutes. Meanwhile, preheat oven to 400 degrees F (200 degrees C).')
 recCin.instruction_set.create(text='Bake rolls in preheated oven until golden brown, about 15 minutes. While rolls are baking, beat together cream cheese, 1/4 cup butter, confectioners\' sugar, vanilla extract and salt. Spread frosting on warm rolls before serving.')
+
+recCup.instruction_set.create(text='Preheat oven to 350 degrees F (175 degrees C). Grease two muffin pans or line with 20 paper baking cups.')
+recCup.instruction_set.create(text='In a medium bowl, beat the butter and sugar with an electric mixer until light and fluffy. Mix in the eggs, almond extract and vanilla. Combine the flour, cocoa, baking powder and salt; stir into the batter, alternating with the milk, just until blended. Spoon the batter into the prepared cups, dividing evenly.')
+recCup.instruction_set.create(text='Bake in the preheated oven until the tops spring back when lightly pressed, 20 to 25 minutes. Cool in the pan set over a wire rack. When cool, arrange the cupcakes on a serving platter. Frost with your favorite frosting.')
 
 #Recipe Ingredients
 RecipeIngredient.objects.create(recipe=recPiz,ingredient=ingPep,amount=10,unit=UnitOfMeasure.objects.get(name='piece'))
@@ -92,20 +97,35 @@ RecipeIngredient.objects.create(recipe=recCin,ingredient=ingCS,amount=1.5,unit=U
 RecipeIngredient.objects.create(recipe=recCin,ingredient=ingVE,amount=.5,unit=UnitOfMeasure.objects.get(name='teaspoon'))
 RecipeIngredient.objects.create(recipe=recCin,ingredient=ingBS,amount=1,unit=UnitOfMeasure.objects.get(name='cup'))
 
+RecipeIngredient.objects.create(recipe=recCup,ingredient=ingButter,amount=10,unit=UnitOfMeasure.objects.get(name='tablespoon'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=ingWhiteSugar,amount=1.25,unit=UnitOfMeasure.objects.get(name='cup'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=ingEggs,amount=4,unit=UnitOfMeasure.objects.get(name='piece'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=Ingredient.objects.create(name='Almond Extract'),amount=.25,unit=UnitOfMeasure.objects.get(name='teaspoon'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=Ingredient.objects.create(name='Vanilla Extract'),amount=1,unit=UnitOfMeasure.objects.get(name='teaspoon'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=Ingredient.objects.create(name='All-Purpose Flour'),amount=1.5,unit=UnitOfMeasure.objects.get(name='cup'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=Ingredient.objects.create(name='Unsweetened Cocoa Powder'),amount=.75,unit=UnitOfMeasure.objects.get(name='teaspoon'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=Ingredient.objects.create(name='Baking Powder'),amount=2,unit=UnitOfMeasure.objects.get(name='teaspoon'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=ingSalt,amount=.25,unit=UnitOfMeasure.objects.get(name='teaspoon'))
+RecipeIngredient.objects.create(recipe=recCup,ingredient=ingMilk,amount=.75,unit=UnitOfMeasure.objects.get(name='cup'))
+
 
 #Recipe Pictures
-recPiz.recipepicture_set.create(path='https://file.ac/c868cDYjWdU/th.jpg')
-recPicPiz = recPiz.recipepicture_set.create(path='https://file.ac/-QPcodr3qxs/pizza.jpg')
+recPiz.recipepicture_set.create(path='https://file.ac/wxkntoCINNU/th.jpg',smallpath='https://file.ac/LqQxM0DIrUI/th_thumb.jpg')
+recPicPiz = recPiz.recipepicture_set.create(path='https://file.ac/egpifGACgq4/pizza.jpg',smallpath='https://file.ac/ZD_Dlo0XjhM/pizza_thumb.jpg')
 recPiz.mainPicture = recPicPiz
 recPiz.save()
 
-recPicBee = recBee.recipepicture_set.create(path='https://file.ac/YSu901Am9qY/beef.jpg')
+recPicBee = recBee.recipepicture_set.create(path='https://file.ac/h6SbdWbQFqo/beef.jpg',smallpath='https://file.ac/tjBg7qSi8lk/beef_thumb.jpg')
 recBee.mainPicture = recPicBee
 recBee.save()
 
-recPicCin = recCin.recipepicture_set.create(path='https://file.ac/lw9SLcwmIak/cinnabon.jpg')
+recPicCin = recCin.recipepicture_set.create(path='https://file.ac/_HclFvSV9kQ/cinnabon.jpg',smallpath='https://file.ac/IK8HbozIrm4/cinnabon_thumb.jpg')
 recCin.mainPicture = recPicCin
 recCin.save()
+
+recPicCup = recCup.recipepicture_set.create(path='https://file.ac/WEgTe41xYIg/cupcake.jpg',smallpath='https://file.ac/k1OPo0EG4q0/cupcake_thumb.jpg')
+recCup.mainPicture = recPicCup
+recCup.save()
 
 #Recipe ratings
 recPiz.review(chef=chefAJ,comment="Best pizza ever!",rating=10)

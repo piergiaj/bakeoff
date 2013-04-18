@@ -1,0 +1,9 @@
+<div >
+  <div style="text-align:center;">
+  <a href="{% url 'recipeDetail' recipe.id %}">
+    <img src="{{recipe.mainPicture.path}}" alt="">
+  </a>
+</div>
+  <h3>{{recipe.name}}</h3>
+  <p>"{{ recipe.chefComment }}" - {{ recipe.chef.username }}</p>
+</div>
