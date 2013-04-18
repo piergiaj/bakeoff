@@ -29,7 +29,12 @@ def home(request):
   return render(request, 'recipe/home.html', context)
 
 def recipeIndex(request):
-  recipe_list = Recipe.objects.all()
+  #recipe_list = Recipe.objects.all()
+  recipe_list = []
+  for i in range(10):
+    for j in range(1,3):
+      recipe_list.append(Recipe.objects.get(id=j))
+
   recipesPerPage = 5
   paginator = Paginator(recipe_list, recipesPerPage)
 
