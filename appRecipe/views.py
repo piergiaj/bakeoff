@@ -12,6 +12,8 @@ from appRecipe import forms
 
 from smartfile import BasicClient
 
+from threading import Thread
+
 import Image
 import os
 import sys
@@ -143,6 +145,15 @@ def login(request):
     form = forms.Login()
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
+def createPDF(api,ids, pictureFolder, recipeName):
+  scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
+  pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
+  args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/']
+  args.append(pdfPath)
+  os.system(" ".join(args))
+  fd = open(pdfPath, 'r').read()
+  api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))
+
 @login_required(login_url='/login/')
 def addRecipe(request):
   if request.method == 'POST':
@@ -213,15 +224,8 @@ def addRecipe(request):
         recipe.mainPicture = rpic
       recipe.save()
 
-
-      scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
-      pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
-      args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/recipes/'+ids+'/']
-      args.append(pdfPath)
-      os.system(" ".join(args))
-      fd = open(pdfPath, 'r').read()
-      api.post('/path/data'+pictureFolder, file=(recipeName+'.pdf', fd))
-
+      t = Thread(target=createPDF, args=(api,ids,pictureFolder,recipeName))
+      t.start()
 
       return HttpResponseRedirect('/recipes')
   else:
