@@ -20,6 +20,7 @@ import urllib2
 import sys
 import subprocess
 import xhtml2pdf
+import StringIO
 #import zlib
 
 def home(request):
