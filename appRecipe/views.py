@@ -13,12 +13,12 @@ from smartfile import BasicClient
 
 import Image
 import os
+import sys
 #import zlib
 
 def home(request):
   recipe_list = Recipe.objects.all()
   chef_list = Chef.objects.all()
-  os.system("man python")
   recipe_picture_list = RecipePicture.objects.all()
   context = { 'chef_list' : chef_list,
               'recipe_list': recipe_list,
@@ -214,3 +214,11 @@ def addRecipe(request):
 
 def test(request):
   return render(request, 'recipe/test.html', {})
+
+def pdf(request):
+  scriptPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"wkhtmltopdf-i386"))
+  pdfPath = os.path.abspath(os.path.join(os.path.dirname(__file__),"pdf.pdf"))
+  args = [scriptPath, "--footer-center", '[page]', 'http://infinite-garden-1600.herokuapp.com/']
+  args.append(pdfPath)
+  os.system(" ".join(args))
+  return HttpResponseRedirect('/')
