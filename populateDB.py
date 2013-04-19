@@ -35,7 +35,7 @@ ingBreadMachineYeast = Ingredient.objects.create(name='Bread Machine Yeast')
 ingGC = Ingredient.objects.create(name='Ground Cinnamon')
 ingButter = Ingredient.objects.create(name='Butter')
 ingCreamCheese = Ingredient.objects.create(name='Cream Cheese')
-ingCS = Ingredient.objects.create(name='Confectioners\' Sugar')
+ingCS = Ingredient.objects.create(name='Confectioners Sugar')
 ingVE = Ingredient.objects.create(name='Vanilla Extract')
 ingBS = Ingredient.objects.create(name='Brown Sugar')
 
