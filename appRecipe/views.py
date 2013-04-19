@@ -293,9 +293,46 @@ def login(request):
     form = forms.Login()
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
-def createLink(rpic,fileName,picName,ids):
-  rpic.setPath(fileName,ids)
-  rpic.setSmallPath(picName[0]+'_thumb.jpg',ids)
+def addRecipeAPICalls(ids,request,recipe):
+  api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+
+  #make folder for pictures
+  pictureFolder = '/RecipePicture/'+ids+'/'
+  api.post('/path/oper/mkdir',path=pictureFolder)
+
+  firstLoop = True
+  for p in request.FILES.getlist('picture'):
+    picName = p.name.split(".")
+    tempPictureName = "tmp."+picName[-1]
+    with open(tempPictureName, 'wb+') as destination:
+      for chunk in p.chunks():
+        destination.write(chunk)
+
+    destination.close()
+    #im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
+    im = Image.open(tempPictureName)
+    size = 64, 64
+    im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
+    im.thumbnail(size, Image.ANTIALIAS)
+    im.save("thumb.jpg", "JPEG")
+
+    #upload picture
+    fileName = recipeName+'_'+picName[0]+'.'+picName[-1]
+    api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
+    api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
+
+    #make picture object
+    rpic = recipe.recipepicture_set.create()
+    rpic.setPath(fileName,ids)
+    rpic.setSmallPath(picName[0]+'_thumb.jpg',ids)
+    if firstLoop:
+      #set this pic as recipe's main pic
+      recipe.mainPicture = rpic
+      recipe.save()
+      firstLoop = False
+
+    os.system("rm "+tempPictureName)
+
 
 def validateForm(request, ings, extra,n=1):
   for i in range(int(extra)):
@@ -350,43 +387,12 @@ def addRecipe(request):
           ingredient = Ingredient.objects.create(name=ingName)
         RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=amount,unit=unit)
 
-      api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
 
-      #make folder for pictures
-      pictureFolder = '/RecipePicture/'+ids+'/'
-      api.post('/path/oper/mkdir',path=pictureFolder)
-
-      for p in request.FILES.getlist('picture'):
-        picName = p.name.split(".")
-        tempPictureName = "tmp."+picName[-1]
-        with open(tempPictureName, 'wb+') as destination:
-          for chunk in p.chunks():
-            destination.write(chunk)
-
-        destination.close()
-        #im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
-        im = Image.open(tempPictureName)
-        size = 64, 64
-        im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
-        im.thumbnail(size, Image.ANTIALIAS)
-        im.save("thumb.jpg", "JPEG")
-
-        #upload picture
-        fileName = recipeName+'_'+picName[0]+'.'+picName[-1]
-        api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
-        api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
-
-        #make picture object
-        rpic = recipe.recipepicture_set.create()
-        t = Thread(target=createLink, args=(rpic,fileName,picName,pictureFolder))
-        t.start()
+      t = Thread(target=addRecipeAPICalls, args=(ids,request,recipe))
+      t.start()
 
 
-        os.system("rm "+tempPictureName)
-
-        #set this pic as recipe's main pic
-        recipe.mainPicture = rpic
-      recipe.save()
+        
 
       return HttpResponseRedirect('/recipes')
   else:
