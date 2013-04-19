@@ -1,6 +1,6 @@
 {% if recipe.previousVersion %}
   {% with template_name="recipe/recipeBreadCrumbRecur.html" %}{% include template_name with recipe=recipe.previousVersion only %}{% endwith %}
 {% endif %}
-<li><a href="{% url 'recipeDetail' recipe.id %}" title="View a Previous Version of this Recipe">{{recipe.name}}</a>
+<li><a href="{% url 'recipeDetail' recipe.id %}" title="View where this Recipe was ReciCopied from">{{recipe.name}}</a>
 <span class="divider">/</span>
 </li>

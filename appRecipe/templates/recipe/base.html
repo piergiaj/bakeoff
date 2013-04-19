@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>{% block title %}Cool Recipe Site{% endblock title %}</title>
+  <title>{% block title %}{% endblock title %}</title>
   <link rel="stylesheet/less" type="text/css" href="{% static 'bootstrap/less/bootstrap.less' %}" /><script src="{% static 'less/less-1.3.3.min.js' %}" ></script>
   <link rel="stylesheet" type="text/css" href="{% static 'starRating/jquery.rating.css' %}" />
   <!-- put body padding here if we have a fixed bar on top/bottom -->
@@ -15,7 +15,7 @@
     <div class="navbar navbar-static-top">
       <div class="navbar-inner">
         <div class="container">
-        <a class="brand" href="{% url 'home' %}">Recipe Site</a>
+        <a class="brand" href="{% url 'home' %}">ReciCopy</a>
         <ul class="nav">
           <li class="{% block RecipeIndexActive %}{% endblock %}"><a href="{% url 'recipeIndex' %}">Recipes</a></li>
           <li class="{% block ChefIndexActive %}{% endblock %}"><a href="{% url 'chefIndex' %}">Chefs</a></li>

@@ -80,7 +80,7 @@ def recipeDetail(request, recipe_id,bottom="Reviews",sortby="HighestRated"):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
   review = None
 
-  if bottom=="Clones":
+  if bottom=="ReciCopies":
     if sortby == 'Newest':
       bottom_list = recipe.recipe_set.all().order_by('id').reverse()
     elif sortby == 'AtoZ':
@@ -142,7 +142,7 @@ def chefDetail(request, chef_id, showrecipes = 'Originals'):
     fav_list = Chef_favoriteRecipes.objects.filter(chef_id=chef_id).order_by('id').reverse()
     for fav in fav_list:
       recipe_list.append(fav.recipe)
-  elif showrecipes == 'Clones':
+  elif showrecipes == 'ReciCopies':
     recipe_list = chef.recipe_set.all().exclude(previousVersion__exact=None)
   else: # Originals
     recipe_list = chef.recipe_set.all().filter(previousVersion__exact=None)

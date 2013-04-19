@@ -1,6 +1,6 @@
 {% extends "recipe/base.html" %}
 
-{% block title %}Recipe Site{% endblock title %}
+{% block title %}ReciCopy{% endblock title %}
 
 {% block content %}
   <h1>Recipe of the Week!</h1>
@@ -8,7 +8,7 @@
   {# carousel code #}
   <div id="myCarousel" class="carousel slide">
     <div class="carousel-inner">
-        <div class="active item">
+        <div class="active item" >
           <a href="{% url 'recipeDetail' recipeOfTheDay.id %}">
           <img src="{{ recipeOfTheDay.mainPicture.path }}" alt="pic" />
           <div class="carousel-caption">
