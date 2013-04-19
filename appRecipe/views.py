@@ -76,18 +76,46 @@ def getItemListAndPageList(ls, perPage, request):
 
   return (sublist, pages)
   
-def recipeDetail(request, recipe_id):
+def recipeDetail(request, recipe_id,bottom="Reviews",sortby="HighestRated"):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
   review = None
-  if request.user.is_authenticated():
-    revList = recipe.review_set.filter(chef_id=request.user.id)
-    if revList.count() > 0:
-      review = revList[0]
-  return render(request, 'recipe/recipeDetail.html', {'recipe':recipe, 'review':review})
+
+  if bottom=="Clones":
+    if sortby == 'Newest':
+      bottom_list = recipe.recipe_set.all().order_by('id').reverse()
+    elif sortby == 'AtoZ':
+      bottom_list = recipe.recipe_set.all().order_by('name')
+    else:
+      bottom_list = recipe.recipe_set.all().order_by('averageRating').reverse()
+      sortby = 'HighestRated'
+
+  else: #Reviews
+    if request.user.is_authenticated():
+      revList = recipe.review_set.filter(chef_id=request.user.id)
+      if revList.count() > 0:
+        review = revList[0]
+
+    bottom_list = recipe.review_set.order_by('dateCreated').reverse()[:5]
+    bottom="Reviews"
+
+
+  itemsPerPage = 5
+
+  ret = getItemListAndPageList(bottom_list, itemsPerPage, request)
+  recipes = ret[0]
+  pages = ret[1]
+
+  context = { 'bottom_list': bottom_list,
+              'pages':pages,
+              'sortby':sortby,
+              'recipe':recipe,
+              'review':review, 
+              'bottom':bottom}
+  return render(request, 'recipe/recipeDetail.html', context)
   
-def recipeReviews(request, recipe_id):
+'''def recipeReviews(request, recipe_id):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
-  return render(request, 'recipe/recipeReviews.html', {'recipe':recipe})
+  return render(request, 'recipe/recipeReviews.html', {'recipe':recipe})'''
 
 def chefIndex(request, sortby = 'Newest'):
   if sortby == 'AtoZ':

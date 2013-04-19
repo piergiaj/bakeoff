@@ -12,20 +12,10 @@ os.system("python manage.py rebuild_index")
 
 chefErik = Chef.objects.create_user('Erik','sanderej@rose-hulman.edu','bakeoff')
 chefAJ = Chef.objects.create_user('AJ','piergiaj@rose-hulman.edu','bakeoff')
-chefFelisha = Chef.objects.create_user('Felisha','sanderej@rose-hulman.edu','bakeoff')
-chefTrevor = Chef.objects.create_user('Trevor','piergiaj@rose-hulman.edu','bakeoff')
-chefKice = Chef.objects.create_user('Kice','sanderej@rose-hulman.edu','bakeoff')
-chefAlex = Chef.objects.create_user('Alex','piergiaj@rose-hulman.edu','bakeoff')
-chefJosh = Chef.objects.create_user('Josh','piergiaj@rose-hulman.edu','bakeoff')
 
 #Chef Pictures
-ChefPicture.objects.create(chef=chefErik,path='https://file.ac/we4igBOMnuc/erik.jpg')
-ChefPicture.objects.create(chef=chefAJ,path='https://file.ac/sCJYAvF3_BA/aj.jpg')
-ChefPicture.objects.create(chef=chefFelisha,path='https://file.ac/we4igBOMnuc/erik.jpg')
-ChefPicture.objects.create(chef=chefTrevor,path='https://file.ac/sCJYAvF3_BA/trevor.jpg')
-ChefPicture.objects.create(chef=chefKice,path='https://file.ac/we4igBOMnuc/erik.jpg')
-ChefPicture.objects.create(chef=chefAlex,path='https://file.ac/sCJYAvF3_BA/alex.jpg')
-ChefPicture.objects.create(chef=chefJosh,path='https://file.ac/sCJYAvF3_BA/josh.jpg')
+ChefPicture.objects.create(chef=chefErik,path='https://file.ac/nV3ekIcqA24/erik.jpg',smallpath='https://file.ac/VTPzb5blA9U/erik_thumb.jpg')
+ChefPicture.objects.create(chef=chefAJ,path='https://file.ac/UIP7896_klA/aj.jpg',smallpath='https://file.ac/AKGjKXHgrwo/aj_thumb.jpg')
 
 #Ingredients
 ingPep = Ingredient.objects.create(name='Pepperoni')
@@ -58,7 +48,7 @@ for unit in units:
 recPiz = chefErik.recipe_set.create(name='Pizza',chefComment='Bibidy Boppody',prepTime=10,cookTime=20)
 recBee = chefAJ.recipe_set.create(name='Beef',chefComment='Awesome roast beef',prepTime=40,cookTime=90)
 recCin = chefErik.recipe_set.create(name='Clone of a Cinnabon',chefComment='You have got to try these. The first time I made them, I thought of how much money I could save by making my own!',prepTime=20,cookTime=15)
-recCup = chefErik.recipe_set.create(name='Easy Chocolate Cupcakes',chefComment='These chocolate cupcakes are easy to make and very tasty.',prepTime=10,cookTime=20)
+recCup = chefAJ.recipe_set.create(name='Easy Chocolate Cupcakes',chefComment='These chocolate cupcakes are easy to make and very tasty.',prepTime=10,cookTime=20)
 
 #Instructions
 recPiz.instruction_set.create(text='Put the dough down.')
@@ -129,16 +119,11 @@ recCup.save()
 
 #Recipe ratings
 recPiz.review(chef=chefAJ,comment="Best pizza ever!",rating=10)
-recPiz.review(chef=chefFelisha,comment="Would be better without pepperoni.",rating=3)
-recPiz.review(chef=chefTrevor,comment="Too greasy for me...",rating=1)
-recPiz.review(chef=chefKice,comment="Great",rating=8)
-recPiz.review(chef=chefAlex,comment="Amazing",rating=10)
-recPiz.review(chef=chefJosh,comment="Good",rating=6)
 
-recCin.review(chef=chefAJ,comment="Very good recipe",rating=10)
-recCin.review(chef=chefFelisha,comment="Came out just like the Picture!",rating=10)
-recCin.review(chef=chefTrevor,comment="Great dessert.",rating=8)
-recCin.review(chef=chefAlex,comment="Amazing",rating=10)
-recCin.review(chef=chefJosh,comment="Pretty good stuff",rating=9)
+recBee.review(chef=chefErik,comment="Didn't look like the best recipe, but I tried it and it was good!",rating=8)
+
+recCin.review(chef=chefAJ,comment="Very good recipe",rating=9)
+
+recCup.review(chef=chefErik,comment="Good enough to enter in a Bake-Off!",rating=10)
 
 os.system("python manage.py rebuild_index")

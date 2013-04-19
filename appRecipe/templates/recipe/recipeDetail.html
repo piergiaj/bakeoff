@@ -43,7 +43,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p>"{{ recipe.chefComment }}" - <a href="{% url 'chefDetail' recipe.chef.id %}">{{ recipe.chef.username }}</a></p>
-          <p>{% include "recipe/starRating.html" with value=recipe.averageRating disabled="disabled" name="mainStar" only %}&nbsp;&nbsp;(&nbsp;<a href="{% url 'recipeReviews' recipe.id %}">{{recipe.review_set.count}} reviews</a>&nbsp;)</p>
+          <p>{% include "recipe/starRating.html" with value=recipe.averageRating disabled="disabled" name="mainStar" only %}&nbsp;&nbsp;(&nbsp;{{recipe.review_set.count}} reviews&nbsp;)</p>
         </div>
       </div>
     </div>
@@ -100,10 +100,15 @@
   </div>
   <div class="row-fluid">
     <div class="span12">
-      <h2>Reviews</h2>
-      {% if recipe.review_set.count > 5 %}
-        <a href="{% url 'recipeReviews' recipe.id %}">Read all reviews.</a>
-      {% endif %}
+      <ul class="nav nav-pills">
+        <li {% if bottom == "Reviews" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottom' recipe.id 'Reviews' %}">Reviews</a>
+        </li>
+        <li {% if bottom == "Clones" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottom' recipe.id 'Clones' %}">Clones</a>
+        </li>
+      </ul>
+    {% if bottom == "Reviews" %}
 
       {% if user.is_authenticated and user.id != recipe.chef.id %}
       <a class="btn" title="Review" data-toggle="collapse" data-target="#addReview" ><i class="icon-comment"></i></a>
@@ -113,11 +118,32 @@
         <input type="submit" value="Submit" />
       </form>
       {% endif %}
-      {% for review in recipe.review_set.all|slice:"::-1"|slice:":5" %}
+      {% for review in bottom_list %}
         {% include "recipe/reviewMediaObject.html" with review=review name=forloop.counter0 %}
       {% empty %}
       <p>No reviews yet.</p>
       {% endfor %}
+
+    {% elif bottom == "Clones" %}
+      <ul class="nav nav-pills">
+        <li {% if sortby == "HighestRated" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottomSortBy' recipe.id 'Clones' 'HighestRated' %}">Highest Rated</a>
+        </li>
+        <li {% if sortby == "Newest" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottomSortBy' recipe.id 'Clones' 'Newest' %}">Newest</a>
+        </li>
+        <li {% if sortby == "AtoZ" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottomSortBy' recipe.id 'Clones' 'AtoZ' %}">A to Z</a>
+        </li>
+      </ul>
+        {% for recipe in bottom_list %}
+          {% include "recipe/recipeMediaObject.html" with recipe=recipe starName=forloop.counter0 only %}
+        {% empty %}
+          <p>No clone recipes.</p>
+        {% endfor %}
+      
+    {% endif %}
+    {% include "recipe/pagingControl.html" with pageObject=bottom_list pageList=pages %}
     </div>
   </div>
 {% endblock content %}
