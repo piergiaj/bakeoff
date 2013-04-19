@@ -185,37 +185,8 @@ def addChef(request):
       user = authenticate(username=username,password=password)
 
 
-      api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
-
-      #make folder for pictures
-      pictureFolder = '/ChefPicture/'+str(newChef.id)+'/'
-      api.post('/path/oper/mkdir',path=pictureFolder)
-
-      p = request.FILES['chef_picture']
-      picName = p.name.split(".")
-      tempPictureName = "tmp."+picName[-1]
-      with open(tempPictureName, 'wb+') as destination:
-        for chunk in p.chunks():
-          destination.write(chunk)
-
-      destination.close()
-      #im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
-      im = Image.open(tempPictureName)
-      size = 64, 64
-      im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
-      im.thumbnail(size, Image.ANTIALIAS)
-      im.save("thumb.jpg", "JPEG")
-
-      #upload picture
-      fileName = username+'_'+picName[0]+'.'+picName[-1]
-      api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
-      api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
-
-      rpic = ChefPicture.objects.create(chef=newChef)
-      rpic.setPath(fileName, pictureFolder)
-      rpic.setSmallPath(picName[0]+'_thumb.jpg', pictureFolder)
-
-      os.system("rm "+tempPictureName)
+      t = Thread(target=createLink, args=(newChef,request,username))
+      t.start()
 
 
       # assuming authenticate works
@@ -224,6 +195,39 @@ def addChef(request):
   else:
     form = forms.AddChef()
   return render(request, 'recipe/addChef.html', {'form':form})
+
+def addChefAPICalls(newChef,request,username):
+  api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
+
+  #make folder for pictures
+  pictureFolder = '/ChefPicture/'+str(newChef.id)+'/'
+  api.post('/path/oper/mkdir',path=pictureFolder)
+
+  p = request.FILES['chef_picture']
+  picName = p.name.split(".")
+  tempPictureName = "tmp."+picName[-1]
+  with open(tempPictureName, 'wb+') as destination:
+    for chunk in p.chunks():
+      destination.write(chunk)
+
+  destination.close()
+  #im = Image.open(StringIO(file(tempPictureName,"rb").read())) 
+  im = Image.open(tempPictureName)
+  size = 64, 64
+  im.save(picName[0]+"."+picName[-1], "JPEG", quality=30)
+  im.thumbnail(size, Image.ANTIALIAS)
+  im.save("thumb.jpg", "JPEG")
+
+  #upload picture
+  fileName = username+'_'+picName[0]+'.'+picName[-1]
+  api.post('/path/data'+pictureFolder, file=(fileName, open(picName[0]+"."+picName[-1], 'r').read()))
+  api.post('/path/data'+pictureFolder, file=(picName[0]+'_thumb.jpg', open('thumb.jpg', 'r').read()))
+
+  rpic = ChefPicture.objects.create(chef=newChef)
+  rpic.setPath(fileName, pictureFolder)
+  rpic.setSmallPath(picName[0]+'_thumb.jpg', pictureFolder)
+
+  os.system("rm "+tempPictureName)
 
 @login_required(login_url='/login/')
 def addToFavorites(request, recipe_id):
