@@ -323,8 +323,8 @@ def addRecipeAPICalls(ids,request,recipe,recipeName):
 
     #make picture object
     rpic = recipe.recipepicture_set.create()
-    rpic.setPath(fileName,ids)
-    rpic.setSmallPath(picName[0]+'_thumb.jpg',ids)
+    rpic.setPath(fileName,pictureFolder)
+    rpic.setSmallPath(picName[0]+'_thumb.jpg',pictureFolder)
     if firstLoop:
       #set this pic as recipe's main pic
       recipe.mainPicture = rpic
