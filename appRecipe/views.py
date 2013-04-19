@@ -293,7 +293,7 @@ def login(request):
     form = forms.Login()
   return render(request, 'recipe/awefawef.html', {'form':form})'''
 
-def addRecipeAPICalls(ids,request,recipe):
+def addRecipeAPICalls(ids,request,recipe,recipeName):
   api = BasicClient('VATx6OASrU4KYLaWshrxIvyyYUIl8x','xkpKJ3Wti1cXilKJYnMSqaOLvmNnwe')
 
   #make folder for pictures
@@ -388,7 +388,7 @@ def addRecipe(request):
         RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=amount,unit=unit)
 
 
-      t = Thread(target=addRecipeAPICalls, args=(ids,request,recipe))
+      t = Thread(target=addRecipeAPICalls, args=(ids,request,recipe,recipeName))
       t.start()
 
 
