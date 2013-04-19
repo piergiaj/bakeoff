@@ -215,6 +215,8 @@ def addChef(request):
       rpic.setPath(fileName, pictureFolder)
       rpic.setSmallPath(picName[0]+'_thumb.jpg', pictureFolder)
 
+      os.system("rm "+tempPictureName)
+
 
       # assuming authenticate works
       login(request, user)
@@ -374,6 +376,9 @@ def addRecipe(request):
         rpic = recipe.recipepicture_set.create()
         t = Thread(target=createLink, args=(rpic,fileName,picName,pictureFolder))
         t.start()
+
+
+        os.system("rm "+tempPictureName)
 
         #set this pic as recipe's main pic
         recipe.mainPicture = rpic
