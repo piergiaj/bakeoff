@@ -185,7 +185,7 @@ def addChef(request):
       user = authenticate(username=username,password=password)
 
 
-      t = Thread(target=createLink, args=(newChef,request,username))
+      t = Thread(target=addChefAPICalls, args=(newChef,request,username))
       t.start()
 
 
