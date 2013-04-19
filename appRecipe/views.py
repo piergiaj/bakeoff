@@ -102,7 +102,7 @@ def recipeDetail(request, recipe_id,bottom="Reviews",sortby="HighestRated"):
   itemsPerPage = 5
 
   ret = getItemListAndPageList(bottom_list, itemsPerPage, request)
-  recipes = ret[0]
+  bottom_list = ret[0]
   pages = ret[1]
 
   context = { 'bottom_list': bottom_list,
