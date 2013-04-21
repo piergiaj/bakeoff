@@ -1,5 +1,6 @@
 # Django settings for recipe project.
 import os.path
+import dj_database_url
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,17 +12,21 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db/recipe.db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        ''''ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+                                                 'NAME': 'd6umsq6c57ql45',                      # Or path to database file if using sqlite3.
+                                                 # The following settings are not used with sqlite3:
+                                                 'USER': 'pumleekwvhioah',
+                                                 'PASSWORD': 'eQo5O6tq5cnPKuSpaRtxpyAz4L',
+                                                 'HOST': 'ec2-54-243-125-2.compute-1.amazonaws.com:5432/d6umsq6c57ql45',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+                                                 'PORT': '5432',     '''                 # Set to empty string for default.
     }
 }
+
+DATABASES['default'] = dj_database_url.config()
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
