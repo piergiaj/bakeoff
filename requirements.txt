@@ -1,6 +1,5 @@
 Django==1.5.1
 PIL==1.1.7
-Whoosh==2.4.1
 distribute==0.6.34
 dj-database-url==0.2.1
 django-haystack==2.0.0-beta
@@ -9,10 +8,12 @@ heroku==0.1.2
 oauthlib==0.4.0
 psycopg2==2.5
 pycrypto==2.6
-pyelasticsearch==0.2
+pyelasticsearch==0.5
 python-dateutil==1.5
 pytz==2013b
 requests==1.2.0
 requests-oauthlib==0.3.0
+simplejson==3.1.3
+six==1.3.0
 smartfile==2.1-1
 virtualenv==1.9.1
