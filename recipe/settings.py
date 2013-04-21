@@ -170,11 +170,11 @@ LOGGING = {
     }
 }
 
-import os
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname('appRecipe'), 'whooshindex'),
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': os.environ['SEARCHBOX_URL'],
+        'INDEX_NAME': 'documents',
     },
 }
 
