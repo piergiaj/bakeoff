@@ -4,7 +4,7 @@ import sys
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recipe.settings")
 from appRecipe.models import Recipe, Chef, Ingredient, UnitOfMeasure, RecipeIngredient, Instruction, ChefPicture
 
-os.system("python manage.py rebuild_index")
+#os.system("python manage.py rebuild_index")
 
 #Chefs
 #chefErik = Chef.objects.create(name='Erik',email='sanderej@rose-hulman.edu',password='bakeoff')
@@ -126,4 +126,4 @@ recCin.review(chef=chefAJ,comment="Very good recipe",rating=9)
 
 recCup.review(chef=chefErik,comment="Good enough to enter in a Bake-Off!",rating=10)
 
-os.system("python manage.py rebuild_index")
+os.system("python manage.py update_index")
