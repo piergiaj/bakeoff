@@ -17,7 +17,7 @@ class AddRecipe(forms.Form):
 	instructions = forms.CharField(widget=forms.Textarea)
 	inst = forms.IntegerField(widget=forms.HiddenInput())
 	ings = forms.IntegerField(widget=forms.HiddenInput())
-	pics = forms.IntegerField(widget=forms.HiddenInput())
+	pics = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
 	def __init__(self, *args, **kwargs):
 		extra_fields = kwargs.pop('extra',0)
@@ -31,7 +31,6 @@ class AddRecipe(forms.Form):
 		self.fields['pics'].initial = extra_pics
 
 		for i in range(int(extra_fields)):
-			print i
 			self.fields['extra_fields_{index}'.format(index=i)] = forms.CharField(required=False, widget=forms.Textarea)
 
 		for i in range(int(extra_ings)):

@@ -426,7 +426,9 @@ def pdf(request):
 
 def editRecipe(request,recipeID):
   if request.method == 'POST':
-    form = forms.AddRecipe(request.POST, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=request.POST.get('pics'))
+    form = forms.AddRecipe(request.POST, request.FILES, extra=request.POST.get('inst'), ings=request.POST.get('ings'), pics=0)
+    print form.is_valid()
+    print form.errors
     if form.is_valid() and validateForm(request, request.POST.get('ings'), request.POST.get('inst'),0):
       recipeName = form.cleaned_data['recipe_Name']
       prepTime = form.cleaned_data['prep_Time']
@@ -479,9 +481,13 @@ def editRecipe(request,recipeID):
           ingredient = Ingredient.objects.create(name=ingName)
         RecipeIngredient.objects.create(recipe=recipe,ingredient=ingredient,amount=amount,unit=unit)
 
+      ids = str(recipe.id)
+      t = Thread(target=addRecipeAPICalls, args=(ids,request,recipe,recipeName))
+      t.start()
+
       recipe.save()
 
-      return HttpResponseRedirect('/recipes/'+str(recipe.id)+'/')
+      return HttpResponseRedirect('/recipes/')
   else:
     recipe = Recipe.objects.get(id=recipeID)
     initial={'recipe_Name':recipe.name,
@@ -509,8 +515,13 @@ def editRecipe(request,recipeID):
   for i in RecipeIngredient.objects.filter(recipe_id=recipeID):
         ingredientsInitial.append({'name':i.ingredient.name,'amount':i.amount,'unit':i.unit})
 
+  initalPics = []
+  for p in recipe.recipepicture_set.all():
+    initalPics.append({'id':p.id, 'path':p.path})
+
   return render(request, 'recipe/editRecipe.html', {'form':form, 
                                                     'ingredients':ings,
                                                     'units': units,
                                                     'length':len(form.fields)-recipe.instruction_set.count()-2,
-                                                    'initialIngredients':ingredientsInitial})
+                                                    'initialIngredients':ingredientsInitial,
+                                                    'initialPics':initalPics})

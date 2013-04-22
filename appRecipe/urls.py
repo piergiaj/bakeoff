@@ -1,7 +1,10 @@
 from django.conf.urls import patterns, url, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from recipe import settings
-
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from appRecipe import views
+
+dajaxice_autodiscover()
 
 urlpatterns = patterns('',
   url(r'^$', views.home, name='home'),
@@ -30,9 +33,13 @@ urlpatterns = patterns('',
 
   url(r'^search/', include('haystack.urls')),
 
+  url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
+
 
   url(r'^test/$', views.test),
   url(r'^staticfiles/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),
 )
 
 '''url(r'^getPic/(?P<pic_name>(\d|\D)+)/$', views.getPic, name='getPic'),'''
+
+urlpatterns += staticfiles_urlpatterns()

@@ -1,8 +1,11 @@
 {% extends "recipe/base.html" %}
-
+{% load dajaxice_templatetags %}
 {% load appRecipe_extras %}
 
 {% block title %}Edit {{name}}{% endblock title %}
+{% block extrahead %}
+  {% dajaxice_js_import %}
+  {% endblock extrahead %}
 
 {% block content %}
 
@@ -28,6 +31,17 @@
         <label for="id_comments">Chef Comments:</label>
         {{ form.comments }}
     </div>
+    
+
+    <div id="pics">
+        {% for p in initialPics %}
+       <div> <img style="width:64px;height:64px;" picid={{p.id}} src={{p.path}} class="img-polaroid">
+
+        <a class='btn' onclick='Dajaxice.appRecipe.deletePic(null, {"id":{{p.id}}});'><i class="icon-trash"></i></a></div>
+        {% endfor %}
+    </div>
+
+    <button id="add-pic" type="button">Add Another Picture</button>
    
     <div id="ingredients">
 
@@ -84,11 +98,7 @@
         <label for="id_ings"></label>
         {{ form.ings }}
     </div>
-    <div class="fieldWrapper">
-        {{ form.pics.errors }}
-        <label for="id_pics"></label>
-        {{ form.pics }}
-    </div>
+    <input id="id_pic" name="pic" value="0" type="hidden">
 <input type="submit" value="Submit" />
 </form>
 
