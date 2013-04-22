@@ -2,6 +2,7 @@ Django==1.5.1
 PIL==1.1.7
 distribute==0.6.34
 dj-database-url==0.2.1
+django-dajaxice==0.5.5
 django-haystack==2.0.0-beta
 gunicorn==0.17.2
 heroku==0.1.2
