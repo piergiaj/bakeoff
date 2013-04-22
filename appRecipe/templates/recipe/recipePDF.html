@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body>
+
+<img src="{{ recipe.mainPicture.smallpath }}" alt="Main Recipe Picture" class="img-polaroid">
+
+<h1>{{ recipe.name }}</h1>
+
+<p>"{{ recipe.chefComment }}" - <a href="{% url 'chefDetail' recipe.chef.id %}">{{ recipe.chef.username }}</a></p>
+
+<h4>Prep Time</h4>
+<p>{{ recipe.prepTimeString }}</p>
+<h4>Cook Time</h4>
+<p>{{ recipe.cookTimeString }}</p>
+<h4>Total Time</h4>
+<p>{{ recipe.totalTimeString }}</p>
+
+<h2>Ingredients</h2>
+{% if recipe.recipeingredient_set.all %}
+<ul>
+{% for ri in recipe.recipeingredient_set.all %}
+<li>{{ ri.amount }} {{ ri.unit.name }}{{ ri.amount|pluralize }} of {{ ri.ingredient.name }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No ingredients</p>
+{% endif %}
+
+<h2>Instructions</h2>
+{% if recipe.instruction_set.all %}
+{% for ri in recipe.instruction_set.all %}
+{{forloop.counter}}. {{ ri.text }}
+{% endfor %}
+{% else %}
+<p>No instructions.</p>
+{% endif %}
+
+</body></html>

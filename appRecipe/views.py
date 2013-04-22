@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import Context, loader
+from django.template.loader import get_template
 from django.shortcuts import render, get_object_or_404 #, get_list_or_404
 from appRecipe.models import Recipe, Chef, ChefPicture, RecipePicture, Ingredient, UnitOfMeasure, RecipeIngredient, Chef_favoriteRecipes
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,11 +13,14 @@ from appRecipe import forms
 
 from smartfile import BasicClient
 
+from xhtml2pdf import pisa
+
 from threading import Thread
 
 import Image
 import os
 import sys
+import StringIO
 #import zlib
 
 def home(request):
@@ -514,3 +518,59 @@ def editRecipe(request,recipeID):
                                                     'units': units,
                                                     'length':len(form.fields)-recipe.instruction_set.count()-2,
                                                     'initialIngredients':ingredientsInitial})
+
+def render_to_pdf(template_src, context_dict):
+  """Function to render html template into a pdf file"""
+  template = get_template(template_src)
+  context = Context(context_dict)
+  html = template.render(context)
+  result = StringIO.StringIO()
+
+  pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")),
+                                               dest=result,
+                                               encoding='UTF-8',
+                                               path='http://localhost:8000/')
+  if not pdf.err:
+    response = HttpResponse(result.getvalue(),
+                                               mimetype='application/pdf')
+
+    return response
+
+  return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
+
+
+def download_pdf(request,recipe_id):
+  recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+  context = { 'recipe':recipe, }
+  response = HttpResponse(content_type='application/pdf')
+  return render_to_pdf('recipe/recipeDetail.html',context_dict=context)#, file_object=response)
+
+def fetch_resources(uri, rel):
+  """
+  Callback to allow xhtml2pdf/reportlab to retrieve Images,Stylesheets, etc.
+  `uri` is the href attribute from the html link element.
+  `rel` gives a relative path, but it's not used here.
+
+  """
+  print uri
+  if uri.startswith(settings.MEDIA_URL):
+    path = os.path.join(settings.MEDIA_ROOT,
+                         uri.replace(settings.MEDIA_URL, ""))
+  elif uri.startswith(settings.STATIC_URL):
+    path = os.path.join(settings.STATIC_ROOT,
+                         uri.replace(settings.STATIC_URL, ""))
+  else:
+    path = os.path.join(settings.STATIC_ROOT,
+                         uri.replace(settings.STATIC_URL, ""))
+
+    if not os.path.isfile(path):
+      path = os.path.join(settings.MEDIA_ROOT,
+                             uri.replace(settings.MEDIA_URL, ""))
+
+      if not os.path.isfile(path):
+        raise UnsupportedMediaPathException(
+         'media urls must start with %s or %s' % (
+         settings.MEDIA_ROOT, settings.STATIC_ROOT))
+
+  return path

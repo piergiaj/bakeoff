@@ -16,6 +16,7 @@ urlpatterns = patterns('',
   url(r'^recipes/(?P<recipe_id>\d+)/reviews/add$', views.addReview, name='addReview'),
   url(r'^recipes/(?P<recipe_id>\d+)/favorite/$', views.addToFavorites, name='addToFavorites'),
   url(r'^recipes/(?P<recipe_id>\d+)/unfavorite/$', views.removeFromFavorites, name='removeFromFavorites'),
+  url(r'^recipes/(?P<recipe_id>\d+)/pdf/$', views.download_pdf, name='downloadRecipePDF'),
   url(r'^recipes/add/$', views.addRecipe, name='addRecipe'),
   url(r'^recipes/(?P<recipeID>\d+)/edit/$', views.editRecipe, name='editRecipe'),
 
