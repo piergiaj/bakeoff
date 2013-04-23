@@ -522,6 +522,7 @@ def editRecipe(request,recipeID):
   return render(request, 'recipe/editRecipe.html', {'form':form, 
                                                     'ingredients':ings,
                                                     'units': units,
+                                                    'steps':range(0,recipe.instruction_set.count()),
                                                     'length':len(form.fields)-recipe.instruction_set.count()-2,
                                                     'initialIngredients':ingredientsInitial,
                                                     'initialPics':initalPics})

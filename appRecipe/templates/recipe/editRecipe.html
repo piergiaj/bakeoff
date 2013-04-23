@@ -1,6 +1,8 @@
 {% extends "recipe/base.html" %}
 {% load dajaxice_templatetags %}
 {% load appRecipe_extras %}
+{% load set_var %}
+
 
 {% block title %}Edit {{name}}{% endblock title %}
 {% block extrahead %}
@@ -76,10 +78,11 @@
         <label for="id_instructions">Step 1:</label>
         {{ form.instructions }}
     </div>
+    {{steps|init}}
     {% for field in form %}
     {% if 'field' in field.html_name %}
     <div class="fieldWrapper">
-        <label>Step {{ forloop.counter|subtract:length|add:1 }}:</label> {{ field }}
+        <label>Step {{ steps|next }}:</label> {{ field }}
     </div>
     {% endif %}
 {% endfor %}
