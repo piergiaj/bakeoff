@@ -87,9 +87,9 @@
     </div>
     <div class="span8">
       <h2>Instructions</h2>
-      {% if recipe.instruction_set.all %}
+      {% if instructions %}
         <ol>
-        {% for ri in recipe.instruction_set.all %}
+        {% for ri in instructions %}
           <li>{{ ri.text }}</li>
         {% endfor %}
         </ol>
@@ -101,11 +101,11 @@
   <div class="row-fluid">
     <div class="span12">
       <ul class="nav nav-pills">
-        <li {% if bottom == "Reviews" %}class="active"{%endif%}>
-          <a href="{% url 'recipeDetailBottom' recipe.id 'Reviews' %}">Reviews</a>
-        </li>
         <li {% if bottom == "ReciCopies" %}class="active"{%endif%}>
           <a href="{% url 'recipeDetailBottom' recipe.id 'ReciCopies' %}">ReciCopies</a>
+        </li>
+        <li {% if bottom == "Reviews" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottom' recipe.id 'Reviews' %}">Reviews</a>
         </li>
       </ul>
     {% if bottom == "Reviews" %}
