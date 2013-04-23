@@ -99,6 +99,8 @@ def recipeDetail(request, recipe_id,bottom="ReciCopies",sortby="HighestRated"):
 
     bottom = "ReciCopies"
 
+  instructions = recipe.instruction_set.order_by('id')
+
   
   itemsPerPage = 5
 
@@ -111,7 +113,8 @@ def recipeDetail(request, recipe_id,bottom="ReciCopies",sortby="HighestRated"):
               'sortby':sortby,
               'recipe':recipe,
               'review':review, 
-              'bottom':bottom}
+              'bottom':bottom,
+              'instructions':instructions }
   return render(request, 'recipe/recipeDetail.html', context)
   
 '''def recipeReviews(request, recipe_id):
@@ -497,13 +500,13 @@ def editRecipe(request,recipeID):
               'comments':recipe.chefComment}
 
     j = 0
-    for i in recipe.instruction_set.all():
+    for i in recipe.instruction_set.order_by('id'):
       initial['instructions' if j == 0 else 'extra_fields_'+str(j-1)] = i.text
       j = j+1
 
     form = forms.AddRecipe(initial=initial, extra=recipe.instruction_set.count()-1, ings=len(RecipeIngredient.objects.filter(recipe_id=recipeID)))
   
-  ingredients = Ingredient.objects.all()
+  ingredients = Ingredient.objects.order_by('id')
 
   ings = "["
   for i in ingredients:
