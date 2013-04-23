@@ -76,11 +76,19 @@ def getItemListAndPageList(ls, perPage, request):
 
   return (sublist, pages)
   
-def recipeDetail(request, recipe_id,bottom="Reviews",sortby="HighestRated"):
+def recipeDetail(request, recipe_id,bottom="ReciCopies",sortby="HighestRated"):
   recipe = get_object_or_404(Recipe, pk=recipe_id)
   review = None
 
-  if bottom=="ReciCopies":
+  if bottom=="Reviews":
+    if request.user.is_authenticated():
+      revList = recipe.review_set.filter(chef_id=request.user.id)
+      if revList.count() > 0:
+        review = revList[0]
+
+    bottom_list = recipe.review_set.order_by('dateCreated').reverse()[:5]
+
+  else: #if bottom=="ReciCopies":
     if sortby == 'Newest':
       bottom_list = recipe.recipe_set.all().order_by('id').reverse()
     elif sortby == 'AtoZ':
@@ -89,16 +97,9 @@ def recipeDetail(request, recipe_id,bottom="Reviews",sortby="HighestRated"):
       bottom_list = recipe.recipe_set.all().order_by('averageRating').reverse()
       sortby = 'HighestRated'
 
-  else: #Reviews
-    if request.user.is_authenticated():
-      revList = recipe.review_set.filter(chef_id=request.user.id)
-      if revList.count() > 0:
-        review = revList[0]
+    bottom = "ReciCopies"
 
-    bottom_list = recipe.review_set.order_by('dateCreated').reverse()[:5]
-    bottom="Reviews"
-
-
+  
   itemsPerPage = 5
 
   ret = getItemListAndPageList(bottom_list, itemsPerPage, request)

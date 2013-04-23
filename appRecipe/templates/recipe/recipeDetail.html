@@ -101,11 +101,11 @@
   <div class="row-fluid">
     <div class="span12">
       <ul class="nav nav-pills">
-        <li {% if bottom == "Reviews" %}class="active"{%endif%}>
-          <a href="{% url 'recipeDetailBottom' recipe.id 'Reviews' %}">Reviews</a>
-        </li>
         <li {% if bottom == "ReciCopies" %}class="active"{%endif%}>
           <a href="{% url 'recipeDetailBottom' recipe.id 'ReciCopies' %}">ReciCopies</a>
+        </li>
+        <li {% if bottom == "Reviews" %}class="active"{%endif%}>
+          <a href="{% url 'recipeDetailBottom' recipe.id 'Reviews' %}">Reviews</a>
         </li>
       </ul>
     {% if bottom == "Reviews" %}
